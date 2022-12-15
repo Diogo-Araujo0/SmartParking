@@ -8,10 +8,10 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-import com.journeyapps.barcodescanner.BarcodeEncoder
+//import com.google.zxing.BarcodeFormat
+//import com.google.zxing.MultiFormatWriter
+//import com.google.zxing.WriterException
+//import com.journeyapps.barcodescanner.BarcodeEncoder
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_login)
+        setContentView(R.layout.activity_user_register)
 
     }
 }
