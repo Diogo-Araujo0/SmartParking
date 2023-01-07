@@ -11,6 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home"
-        tools:layout_editor_absoluteX="171dp"
-        tools:layout_editor_absoluteY="357dp" />
+        tools:layout_editor_absoluteX="200dp"
+        tools:layout_editor_absoluteY="308dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
