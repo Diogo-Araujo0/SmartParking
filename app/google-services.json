@@ -1,26 +1,19 @@
 {
   "project_info": {
     "project_number": "893330719505",
+    "firebase_url": "https://smart-parking-62302-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "smart-parking-62302",
     "storage_bucket": "smart-parking-62302.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:893330719505:android:5f9d4d9bb145946612c2b0",
+        "mobilesdk_app_id": "1:893330719505:android:c3f4c83a9054821812c2b0",
         "android_client_info": {
           "package_name": "ipca.djpm.smartparking"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "893330719505-fk41aegbvqkrnemakh17882ndgj3op74.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ipca.djpm.smartparking",
-            "certificate_hash": "144e29c6290b867789835a7540af15fb21c2360e"
-          }
-        },
         {
           "client_id": "893330719505-v6gb9ca9l2cum5s53t1rige7j1v1g1cp.apps.googleusercontent.com",
           "client_type": 3
