@@ -10,15 +10,36 @@
         android:name="ipca.djpm.smartparking.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_veiculos"
+            app:destination="@id/navigation_veiculos" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_parque"
+            app:destination="@id/navigation_parque" />
     </fragment>
     <fragment
         android:id="@+id/navigation_parque"
         android:name="ipca.djpm.smartparking.ui.home.ParqueFragment"
-        android:label="Parque" />
+        android:label="Parque" >
+        <action
+            android:id="@+id/action_navigation_parque_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_parque_to_navigation_perfil"
+            app:destination="@id/navigation_perfil" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_perfil"
         android:name="ipca.djpm.smartparking.ui.home.PerfilFragment"
-        android:label="Perfil"/>
+        android:label="Perfil">
+        <action
+            android:id="@+id/action_navigation_perfil_to_navigation_parque"
+            app:destination="@id/navigation_parque" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_veiculos"
+        android:name="ipca.djpm.smartparking.ui.home.VeiculosFragment"
+        android:label="Veiculos" />
 
 
 </navigation>

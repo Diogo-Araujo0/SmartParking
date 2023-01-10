@@ -23,7 +23,7 @@ class UserRegisterActivity : AppCompatActivity() {
             val username = editTextRegisterUsername.text.toString()
             val password = editTextRegisterPassword.text.toString()
 
-            if (!username.isBlank() && !password.isBlank()) {
+            if (username.isNotBlank() && password.isNotBlank()) {
                 if (password.length < 6){
                     Toast.makeText(
                         this,
@@ -32,8 +32,8 @@ class UserRegisterActivity : AppCompatActivity() {
                     ).show()
                 }else {
                     val query = "INSERT INTO Utilizador(tipoUtilizadorID, username, password, tempoLimite) VALUES(1,'${username}', '${password}', 0)"
-                    var databaseHelper = DatabaseHelper()
-                    var result = databaseHelper.executeQuery(query, this)
+                    val databaseHelper = DatabaseHelper()
+                    val result = databaseHelper.executeQuery(query, this)
                     if (result == null) {
                         Toast.makeText(this, "Utilizador registado com sucesso", Toast.LENGTH_SHORT).show()
                         val intent = Intent()
@@ -43,8 +43,7 @@ class UserRegisterActivity : AppCompatActivity() {
                         Toast.makeText(this, "Erro ao registar utilizador", Toast.LENGTH_SHORT).show()
                     }
                 }
-           }
-            else{
+           }else{
                 Toast.makeText(this, "Email e Password não podem estar vazios!", Toast.LENGTH_SHORT).show()
             }
         }

@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity: AppCompatActivity() {
-    var resultLauncher : ActivityResultLauncher<Intent>? = null
+    private var resultLauncher : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +33,8 @@ class LoginActivity: AppCompatActivity() {
                 if(checkBoxSaveLogin.isChecked) {
                     saveData(username, password)
                 }
-                var databaseHelper = DatabaseHelper()
-                var result = databaseHelper.login(username, password, this)
+                val databaseHelper = DatabaseHelper()
+                val result = databaseHelper.login(username, password, this)
                 if(result == 1){
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
@@ -50,7 +50,7 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun saveData(username: String, password: String){
-        var sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.apply{
             putString("USER", username)

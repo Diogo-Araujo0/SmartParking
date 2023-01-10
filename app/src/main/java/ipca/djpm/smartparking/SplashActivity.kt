@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -40,7 +39,7 @@ class SplashActivity : AppCompatActivity() {
         }, 500)
     }
 
-    fun loadData(){
+    private fun loadData(){
         val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         savedUser = sharedPreferences.getString("USER", null)
         savedPass = sharedPreferences.getString("PASS", null)

@@ -10,7 +10,19 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
-        tools:layout_editor_absoluteX="200dp"
-        tools:layout_editor_absoluteY="308dp" />
+        android:text="Olá, Utilizador!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.119" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veiculos"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="323dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
