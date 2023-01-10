@@ -2,6 +2,8 @@ package ipca.djpm.smartparking.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.widget.BaseAdapter
 import android.widget.TextView
@@ -23,30 +25,40 @@ class VeiculosFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val sharedPreferences = requireContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        userID = sharedPreferences.getInt("USER_ID", -1)
-
-        if(userID != -1){
-            val query = "SELECT Veiculo.matricula, TipoVeiculo.descricao FROM Veiculo JOIN Utilizador_Veiculo ON Veiculo.matricula = Utilizador_Veiculo.matricula JOIN TipoVeiculo ON Veiculo.tipoVeiculoID = TipoVeiculo.tipoVeiculoID WHERE Utilizador_Veiculo.utilizadorID = ${userID} GROUP BY Veiculo.matricula, TipoVeiculo.descricao"
-            val databaseHelper = DatabaseHelper()
-            val result = context?.let { databaseHelper.executeQuery(query, it) }
-            if (result != null) {
-                while(result.next()){
-                    var matricula = result.getString("matricula")
-                    var tipoVeiculo = result.getString("descricao")
-                    var veiculo = Veiculo(matricula, tipoVeiculo)
-                    veiculos.add(veiculo)
-                }
-                adapter.notifyDataSetChanged()
-            }
-        }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVeiculosBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val sharedPreferences = requireContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        userID = sharedPreferences.getInt("USER_ID", -1)
+
+        val progressBar = binding.progressBar
+        val textViewSemVeiculos = binding.textViewSemVeiculos
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                if(userID != -1){
+                    val query = "SELECT Veiculo.matricula, TipoVeiculo.descricao FROM Veiculo JOIN Utilizador_Veiculo ON Veiculo.matricula = Utilizador_Veiculo.matricula JOIN TipoVeiculo ON Veiculo.tipoVeiculoID = TipoVeiculo.tipoVeiculoID WHERE Utilizador_Veiculo.utilizadorID = ${userID} GROUP BY Veiculo.matricula, TipoVeiculo.descricao"
+                    val databaseHelper = DatabaseHelper()
+                    val result = context?.let { databaseHelper.executeQuery(query, it) }
+                    if (result != null) {
+                        while(result.next()){
+                            var matricula = result.getString("matricula")
+                            var tipoVeiculo = result.getString("descricao")
+                            var veiculo = Veiculo(matricula, tipoVeiculo)
+                            veiculos.add(veiculo)
+                        }
+                        progressBar.visibility = View.INVISIBLE
+
+                        if(veiculos.size == 0){
+                            textViewSemVeiculos.visibility = View.VISIBLE
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }, 1)
         return root
     }
 

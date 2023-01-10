@@ -13,33 +13,19 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_veiculos"
             app:destination="@id/navigation_veiculos" />
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_parque"
-            app:destination="@id/navigation_parque" />
     </fragment>
     <fragment
         android:id="@+id/navigation_parque"
         android:name="ipca.djpm.smartparking.ui.home.ParqueFragment"
-        android:label="Parque" >
-        <action
-            android:id="@+id/action_navigation_parque_to_navigation_home"
-            app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_navigation_parque_to_navigation_perfil"
-            app:destination="@id/navigation_perfil" />
-    </fragment>
+        android:label="Parque" />
     <fragment
         android:id="@+id/navigation_perfil"
         android:name="ipca.djpm.smartparking.ui.home.PerfilFragment"
-        android:label="Perfil">
-        <action
-            android:id="@+id/action_navigation_perfil_to_navigation_parque"
-            app:destination="@id/navigation_parque" />
-    </fragment>
+        android:label="Perfil"/>
     <fragment
         android:id="@+id/navigation_veiculos"
         android:name="ipca.djpm.smartparking.ui.home.VeiculosFragment"
-        android:label="Veiculos" />
+        android:label="Veículos" />
 
 
 </navigation>

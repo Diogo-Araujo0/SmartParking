@@ -17,8 +17,6 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        val progressBarHorizontal = findViewById<ProgressBar>(R.id.progressBarHorizontal)
-        progressBarHorizontal.visibility = View.VISIBLE
         Handler(Looper.getMainLooper()).postDelayed(
         {
             var databaseHelper = DatabaseHelper()
@@ -36,7 +34,7 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish()
             }
-        }, 500)
+        }, 1)
     }
 
     private fun loadData(){
