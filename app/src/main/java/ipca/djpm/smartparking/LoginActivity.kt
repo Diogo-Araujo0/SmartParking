@@ -1,51 +1,60 @@
 package ipca.djpm.smartparking
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity: AppCompatActivity() {
     var resultLauncher : ActivityResultLauncher<Intent>? = null
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_login)
 
-        auth = FirebaseAuth.getInstance()
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){}
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val buttonNewUser = findViewById<Button>(R.id.buttonNewUser)
-        val editTextLoginEmail = findViewById<EditText>(R.id.editTextLoginEmail)
+        val editTextLoginUsername = findViewById<EditText>(R.id.editTextLoginUsername)
         val editTextLoginPassword = findViewById<EditText>(R.id.editTextLoginPassword)
+        val checkBoxSaveLogin = findViewById<CheckBox>(R.id.checkBoxSaveLogin)
 
         buttonLogin.setOnClickListener{
-            val email = editTextLoginEmail.text.toString()
+            val username = editTextLoginUsername.text.toString()
             val password = editTextLoginPassword.text.toString()
-
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    }
+            if(!username.isNullOrEmpty() && !password.isNullOrEmpty()){
+                if(checkBoxSaveLogin.isChecked) {
+                    saveData(username, password)
                 }
+                var databaseHelper = DatabaseHelper()
+                var result = databaseHelper.login(username, password, this)
+                if(result == 1){
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                }
+            }else{
+                Toast.makeText(this, "Username e/ou password não podem estar vazios", Toast.LENGTH_SHORT).show()
+            }
         }
 
         buttonNewUser.setOnClickListener{
             resultLauncher?.launch(Intent(this@LoginActivity, UserRegisterActivity::class.java))
         }
+    }
+
+    private fun saveData(username: String, password: String){
+        var sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.apply{
+            putString("USER", username)
+            putString("PASS", password)
+        }.apply()
     }
 }

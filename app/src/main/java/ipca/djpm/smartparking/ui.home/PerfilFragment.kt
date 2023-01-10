@@ -1,11 +1,15 @@
 package ipca.djpm.smartparking.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import ipca.djpm.smartparking.LoginActivity
 import ipca.djpm.smartparking.databinding.FragmentPerfilBinding
+
 
 class PerfilFragment: Fragment() {
     private var _binding: FragmentPerfilBinding? = null
@@ -21,12 +25,14 @@ class PerfilFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        var root = binding.root
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
     }
 
     override fun onDestroyView() {

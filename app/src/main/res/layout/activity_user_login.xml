@@ -17,7 +17,7 @@
         android:text="Login"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextLoginEmail"
+        app:layout_constraintBottom_toTopOf="@+id/editTextLoginUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -29,11 +29,11 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/editTextLoginEmail"
+        app:layout_constraintEnd_toStartOf="@+id/editTextLoginUsername"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/ic_baseline_email_24" />
+        app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -66,14 +66,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextLoginEmail"
+        android:id="@+id/editTextLoginUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="36dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="Username"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColor="?android:attr/textColorPrimary"
@@ -114,5 +114,16 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextLoginPassword" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSaveLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:text="Guardar login?"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNewUser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

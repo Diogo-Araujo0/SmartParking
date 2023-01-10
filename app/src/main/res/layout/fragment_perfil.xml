@@ -7,6 +7,22 @@
     android:backgroundTint="#00FFFFFF">
 
     <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="48dp"
+        android:backgroundTint="@color/green_ipca"
+        android:text="Logout"
+        android:textColor="@color/white"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAlterar" />
+
+    <Button
         android:id="@+id/buttonAlterar"
         android:layout_width="0dp"
         android:layout_height="56dp"
