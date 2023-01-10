@@ -35,9 +35,11 @@ class LoginActivity: AppCompatActivity() {
                 }
                 val databaseHelper = DatabaseHelper()
                 val result = databaseHelper.login(username, password, this)
-                if(result == 1){
+                if(result != -1){
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
+                }else{
+                    Toast.makeText(this, "Email e/ou password errados", Toast.LENGTH_SHORT).show()
                 }
             }else{
                 Toast.makeText(this, "Username e/ou password não podem estar vazios", Toast.LENGTH_SHORT).show()

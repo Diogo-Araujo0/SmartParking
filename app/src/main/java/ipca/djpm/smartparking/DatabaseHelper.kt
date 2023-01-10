@@ -52,21 +52,21 @@ class DatabaseHelper {
     }
 
     fun login(email: String, password: String, context: Context): Int{
-        val query = "SELECT COUNT(utilizadorID) as contador FROM Utilizador WHERE username='$email' AND password='$password'"
+        val query = "SELECT utilizadorID FROM Utilizador WHERE username='$email' AND password='$password'"
         val result = executeQuery(query, context)
-        if (result != null) {
-            result.next()
-            val count = result.getInt("contador")
-            if (count == 0) {
-                Toast.makeText(context, "Email e/ou password errados", Toast.LENGTH_SHORT).show()
-            } else {
-                return 1
-            }
+        if (result!!.next()) {
+            val utilizadorID = result.getInt("utilizadorID")
+            val sharedPreferences = context.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.apply{
+                putInt("USER_ID", utilizadorID)
+            }.apply()
+            return utilizadorID
         }else{
             Toast.makeText(context, "Erro ao obter utilizador", Toast.LENGTH_SHORT).show()
         }
 
-        return 0
+        return -1
     }
 
 }

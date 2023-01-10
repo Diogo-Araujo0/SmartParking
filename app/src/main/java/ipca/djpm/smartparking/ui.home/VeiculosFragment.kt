@@ -1,16 +1,12 @@
 package ipca.djpm.smartparking.ui.home
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import ipca.djpm.smartparking.Aluno
 import ipca.djpm.smartparking.DatabaseHelper
 import ipca.djpm.smartparking.R
 import ipca.djpm.smartparking.Veiculo
@@ -19,7 +15,7 @@ import ipca.djpm.smartparking.databinding.FragmentVeiculosBinding
 class VeiculosFragment: Fragment() {
     private var _binding: FragmentVeiculosBinding? = null
     private val binding get() = _binding!!
-
+    private var userID : Int? = null
 
     var veiculos = arrayListOf<Veiculo>()
 
@@ -28,18 +24,24 @@ class VeiculosFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val query = "SELECT Veiculo.matricula, TipoVeiculo.descricao FROM Veiculo JOIN Utilizador_Veiculo ON Veiculo.matricula = Utilizador_Veiculo.matricula JOIN TipoVeiculo ON Veiculo.tipoVeiculoID = TipoVeiculo.tipoVeiculoID WHERE Utilizador_Veiculo.utilizadorID = 1 GROUP BY Veiculo.matricula, TipoVeiculo.descricao"
-        val databaseHelper = DatabaseHelper()
-        val result = context?.let { databaseHelper.executeQuery(query, it) }
-        if (result != null) {
-            while(result.next()){
-                var matricula = result.getString("matricula")
-                var tipoVeiculo = result.getString("descricao")
-                var veiculo = Veiculo(matricula, tipoVeiculo)
-                veiculos.add(veiculo)
+        val sharedPreferences = requireContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        userID = sharedPreferences.getInt("USER_ID", -1)
+
+        if(userID != -1){
+            val query = "SELECT Veiculo.matricula, TipoVeiculo.descricao FROM Veiculo JOIN Utilizador_Veiculo ON Veiculo.matricula = Utilizador_Veiculo.matricula JOIN TipoVeiculo ON Veiculo.tipoVeiculoID = TipoVeiculo.tipoVeiculoID WHERE Utilizador_Veiculo.utilizadorID = ${userID} GROUP BY Veiculo.matricula, TipoVeiculo.descricao"
+            val databaseHelper = DatabaseHelper()
+            val result = context?.let { databaseHelper.executeQuery(query, it) }
+            if (result != null) {
+                while(result.next()){
+                    var matricula = result.getString("matricula")
+                    var tipoVeiculo = result.getString("descricao")
+                    var veiculo = Veiculo(matricula, tipoVeiculo)
+                    veiculos.add(veiculo)
+                }
+                adapter.notifyDataSetChanged()
             }
-            adapter.notifyDataSetChanged()
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
