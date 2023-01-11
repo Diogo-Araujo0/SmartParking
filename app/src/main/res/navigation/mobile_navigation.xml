@@ -29,11 +29,19 @@
     <fragment
         android:id="@+id/navigation_veiculos"
         android:name="ipca.djpm.smartparking.ui.home.VeiculosFragment"
-        android:label="Veículos" />
+        android:label="Veículos" >
+        <action
+            android:id="@+id/action_navigation_veiculos_to_navigation_veiculos_add"
+            app:destination="@id/navigation_veiculos_add" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_perfil_editar"
         android:name="ipca.djpm.smartparking.ui.home.EditarPerfilFragment"
         android:label="Editar Perfil" />
+    <fragment
+        android:id="@+id/navigation_veiculos_add"
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.veiculos.VeículosFragmentAdd"
+        android:label="Adicionar Veículo" />
 
 
 </navigation>

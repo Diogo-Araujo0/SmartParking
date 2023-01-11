@@ -21,6 +21,7 @@ class VeículosFragmentAdd: Fragment() {
     private var userID: Int? = null
     private var tipoVeiculoID: Int = -1
     private var arrayTipoVeiculos = arrayListOf<String>()
+    private var arrayMatriculas = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,27 +44,39 @@ class VeículosFragmentAdd: Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                val query = "SELECT descricao FROM TipoVeiculo"
+                var query = "SELECT descricao FROM TipoVeiculo"
                 val databaseHelper = DatabaseHelper()
-                val result = context?.let { databaseHelper.selectQuery(query, it) }
+                var result = context?.let { databaseHelper.selectQuery(query, it) }
                 if (result != null && spinnerTipoVeiculo != null) {
                     while (result.next()) {
                         var descricao = result.getString("descricao")
                         descricao = descricao.replace("\\s+".toRegex(), "")
                         arrayTipoVeiculos.add(descricao)
                     }
-                    progressBar.visibility = View.INVISIBLE
-                    spinnerTipoVeiculo.visibility = View.VISIBLE
-                    buttonAdd.visibility = View.VISIBLE
-                    textViewNovoVeiculo.visibility = View.VISIBLE
-                    textViewAddTipoVeiculo.visibility = View.VISIBLE
-                    editTextAddVeiculoMatricula.visibility = View.VISIBLE
-                    textViewAddMatricula.visibility = View.VISIBLE
-
                     val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, arrayTipoVeiculos)
                     spinnerTipoVeiculo.adapter = adapter
+
+                    query = "SELECT matricula FROM Veiculo"
+                    result = context?.let { databaseHelper.selectQuery(query, it) }
+                    if (result != null){
+                        while (result.next()) {
+                            var matricula = result.getString("matricula")
+                            matricula = matricula.replace("\\s+".toRegex(), "")
+                            arrayMatriculas.add(matricula)
+                        }
+                        progressBar.visibility = View.INVISIBLE
+                        spinnerTipoVeiculo.visibility = View.VISIBLE
+                        buttonAdd.visibility = View.VISIBLE
+                        textViewNovoVeiculo.visibility = View.VISIBLE
+                        textViewAddTipoVeiculo.visibility = View.VISIBLE
+                        editTextAddVeiculoMatricula.visibility = View.VISIBLE
+                        textViewAddMatricula.visibility = View.VISIBLE
+                    }
+                    else{
+                        Toast.makeText(context, "Erro ao obter dados de veículos", Toast.LENGTH_SHORT).show()
+                    }
                 }else{
-                    Toast.makeText(context, "Erro ao obter tipo de veículos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Erro ao obter dados de veículos", Toast.LENGTH_SHORT).show()
                 }
             }, 1)
 
@@ -81,19 +94,32 @@ class VeículosFragmentAdd: Fragment() {
             var matricula = editTextAddVeiculoMatricula.text.toString()
             matricula = matricula.uppercase()
             if(tipoVeiculoID != -1 && verificarMatricula(matricula)){
-                val query = "INSERT INTO Veiculo(matricula, tipoVeiculoID) VALUES('${matricula}', ${tipoVeiculoID})"
                 val databaseHelper = DatabaseHelper()
-                var result = context?.let { databaseHelper.executeQuery(query, it) }
-                if (result == true) {
-                    val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
-                    result = context?.let { databaseHelper.executeQuery(query, it) }
+                if(!arrayMatriculas.contains(matricula)){
+                    val query = "INSERT INTO Veiculo(matricula, tipoVeiculoID) VALUES('${matricula}', ${tipoVeiculoID})"
+                    var result = context?.let { databaseHelper.executeQuery(query, it) }
                     if (result == true) {
-                        Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
+                        val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
+                        result = context?.let { databaseHelper.executeQuery(query, it) }
+                        if (result == true) {
+                            Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }else{
+                            Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
+                        }
                     }else{
                         Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
                     }
                 }else{
-                    Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Veículo já existente", Toast.LENGTH_SHORT).show()
+                    val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
+                    var result = context?.let { databaseHelper.executeQuery(query, it) }
+                    if (result == true) {
+                        Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }else{
+                        Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }else{
                 Toast.makeText(context, "Matricula e/ou tipo de veículo inválido(s)", Toast.LENGTH_SHORT).show()

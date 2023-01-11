@@ -65,7 +65,7 @@ class VeiculosFragment: Fragment() {
 
 
         floatingActionButtonAddVeiculo.setOnClickListener{
-            findNavController().navigate(R.id.action_navigation_veiculos_to_veículosFragmentAdd)
+            findNavController().navigate(R.id.action_navigation_veiculos_to_navigation_veiculos_add)
         }
         return root
     }
@@ -129,18 +129,36 @@ class VeiculosFragment: Fragment() {
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
                         if (userID != -1) {
-                            val query =
-                                "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
                             val databaseHelper = DatabaseHelper()
-                            val result = context?.let { databaseHelper.selectQuery(query, it) }
-                            if (result == null) {
-                                Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
-                                progressBar.visibility = View.INVISIBLE
-                                adapter.notifyDataSetChanged()
-                            } else {
-                                Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
-                                progressBar.visibility = View.INVISIBLE
+                            var query = "SELECT COUNT(utilizadorID) as contador from Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}'"
+                            var resultSelect = context?.let { databaseHelper.selectQuery(query, it) }
+                            if(resultSelect!!.next()){
+                                val contador = resultSelect.getInt("contador")
+                                var result: Boolean
+
+                                if(contador > 1) {
+                                    query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
+                                    result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                }else{
+                                    query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
+                                    result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                    if (result == true) {
+                                        query = "DELETE FROM Veiculo WHERE matricula='${veiculos[position].matricula}'"
+                                        result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                    }
+                                }
+
+                                if (result == true) {
+                                    Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
+                                    progressBar.visibility = View.INVISIBLE
+                                    veiculos.remove(veiculos[position])
+                                    adapter.notifyDataSetChanged()
+                                } else {
+                                    Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
+                                    progressBar.visibility = View.INVISIBLE
+                                }
                             }
+
                         }
                     }, 1)
             }
