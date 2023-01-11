@@ -1,6 +1,7 @@
 package ipca.djpm.smartparking.ui.home.ui.home
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ipca.djpm.smartparking.DatabaseHelper
@@ -26,6 +28,7 @@ class VeiculosFragmentAdd: Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVeiculosAddBinding.inflate(inflater, container, false)
         val root: View = binding.root

@@ -1,6 +1,7 @@
 package ipca.djpm.smartparking.ui.home
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import ipca.djpm.smartparking.DatabaseHelper
 import ipca.djpm.smartparking.Lugar
@@ -27,6 +29,7 @@ class ParqueFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,6 +91,7 @@ class ParqueFragment : Fragment() {
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun getLugares(escolaID: Int){
         val databaseHelper = DatabaseHelper()
         binding.progressBarParque.visibility = View.VISIBLE

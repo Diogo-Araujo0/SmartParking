@@ -1,6 +1,7 @@
 package ipca.djpm.smartparking.ui.home.ui.home.veiculos
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.view.*
 import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,6 +31,7 @@ class VeiculosFragment: Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVeiculosBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -115,6 +118,7 @@ class VeiculosFragment: Fragment() {
             return 0
         }
 
+        @RequiresApi(Build.VERSION_CODES.M)
         override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_veiculo,parent,false)
 
@@ -134,33 +138,38 @@ class VeiculosFragment: Fragment() {
                             val databaseHelper = DatabaseHelper()
                             var query = "SELECT COUNT(utilizadorID) as contador from Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}'"
                             val resultSelect = context?.let { databaseHelper.selectQuery(query, it) }
-                            if(resultSelect!!.next()){
-                                val contador = resultSelect.getInt("contador")
-                                var result: Boolean
+                            if (resultSelect != null) {
+                                if(resultSelect.next()){
+                                    val contador = resultSelect.getInt("contador")
+                                    var result: Boolean
 
-                                if(contador > 1) {
-                                    query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
-                                    result = context?.let { databaseHelper.executeQuery(query, it) }!!
-                                }else{
-                                    query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
-                                    result = context?.let { databaseHelper.executeQuery(query, it) }!!
-                                    if (result) {
-                                        query = "DELETE FROM Veiculo WHERE matricula='${veiculos[position].matricula}'"
+                                    if(contador > 1) {
+                                        query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
                                         result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                    }else{
+                                        query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
+                                        result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                        if (result) {
+                                            query = "DELETE FROM Veiculo WHERE matricula='${veiculos[position].matricula}'"
+                                            result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                        }
+                                    }
+
+                                    if (result) {
+                                        Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
+                                        progressBar.visibility = View.INVISIBLE
+                                        veiculos.remove(veiculos[position])
+                                        adapter.notifyDataSetChanged()
+                                    } else {
+                                        Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
+                                        progressBar.visibility = View.INVISIBLE
                                     }
                                 }
-
-                                if (result) {
-                                    Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
-                                    progressBar.visibility = View.INVISIBLE
-                                    veiculos.remove(veiculos[position])
-                                    adapter.notifyDataSetChanged()
-                                } else {
-                                    Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
-                                    progressBar.visibility = View.INVISIBLE
-                                }
                             }
-
+                            else {
+                                Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
+                                progressBar.visibility = View.INVISIBLE
+                            }
                         }
                     }, 1)
             }

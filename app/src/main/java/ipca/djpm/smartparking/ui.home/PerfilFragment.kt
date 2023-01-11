@@ -2,6 +2,7 @@ package ipca.djpm.smartparking.ui.home
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,8 @@ import android.os.strictmode.Violation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ipca.djpm.smartparking.DatabaseHelper
@@ -26,6 +29,7 @@ class PerfilFragment: Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,35 +66,39 @@ class PerfilFragment: Fragment() {
                     val query = "SELECT username, cartaoCidadao, morada, nome, sexo, codPostal, CONVERT(date, dataNascimento) as dataNascimento FROM Aluno JOIN Aluno_Utilizador ON Aluno_Utilizador.numAluno = Aluno.numAluno JOIN Utilizador ON Utilizador.utilizadorId = Aluno_Utilizador.utilizadorID WHERE Utilizador.utilizadorID = ${userID}"
                     val databaseHelper = DatabaseHelper()
                     val result = context?.let { databaseHelper.selectQuery(query, it) }
-                    if (result!!.next()) {
-                        textViewNome.text = result.getString("nome")
-                        textViewUsername.text = result.getString("username")
-                        textViewCartaoCidadao.text = result.getInt("cartaoCidadao").toString()
-                        textViewMorada.text = result.getString("morada")
-                        textViewDataNascimento.text = result.getString("dataNascimento").toString()
-                        textViewSexo.text = result.getString("sexo")
-                        textViewCodPostal.text = result.getInt("codPostal").toString()
+                    if (result != null) {
+                        if (result.next()) {
+                            textViewNome.text = result.getString("nome")
+                            textViewUsername.text = result.getString("username")
+                            textViewCartaoCidadao.text = result.getInt("cartaoCidadao").toString()
+                            textViewMorada.text = result.getString("morada")
+                            textViewDataNascimento.text = result.getString("dataNascimento").toString()
+                            textViewSexo.text = result.getString("sexo")
+                            textViewCodPostal.text = result.getInt("codPostal").toString()
 
-                        textViewNome.visibility = View.VISIBLE
-                        textViewUsername.visibility = View.VISIBLE
-                        textViewCartaoCidadao.visibility = View.VISIBLE
-                        textViewMorada.visibility = View.VISIBLE
-                        textViewSexo.visibility = View.VISIBLE
-                        textViewCodPostal.visibility = View.VISIBLE
-                        textViewDataNascimento.visibility = View.VISIBLE
+                            textViewNome.visibility = View.VISIBLE
+                            textViewUsername.visibility = View.VISIBLE
+                            textViewCartaoCidadao.visibility = View.VISIBLE
+                            textViewMorada.visibility = View.VISIBLE
+                            textViewSexo.visibility = View.VISIBLE
+                            textViewCodPostal.visibility = View.VISIBLE
+                            textViewDataNascimento.visibility = View.VISIBLE
 
-                        imageView9.visibility = View.VISIBLE
-                        imageView6.visibility = View.VISIBLE
-                        imageView5.visibility = View.VISIBLE
-                        imageView11.visibility = View.VISIBLE
-                        imageView10.visibility = View.VISIBLE
-                        imageView2.visibility = View.VISIBLE
-                        imageView7.visibility = View.VISIBLE
+                            imageView9.visibility = View.VISIBLE
+                            imageView6.visibility = View.VISIBLE
+                            imageView5.visibility = View.VISIBLE
+                            imageView11.visibility = View.VISIBLE
+                            imageView10.visibility = View.VISIBLE
+                            imageView2.visibility = View.VISIBLE
+                            imageView7.visibility = View.VISIBLE
 
-                        buttonAlterar.visibility = View.VISIBLE
-                        buttonContactos.visibility = View.VISIBLE
+                            buttonAlterar.visibility = View.VISIBLE
+                            buttonContactos.visibility = View.VISIBLE
+                        }else{
+                            textViewTempUser.visibility = View.VISIBLE
+                        }
                     }else{
-                        textViewTempUser.visibility = View.VISIBLE
+                        Toast.makeText(context, "Erro ao obter dados de perfil", Toast.LENGTH_SHORT).show()
                     }
                     progressBarPerfil.visibility = View.INVISIBLE
                 }

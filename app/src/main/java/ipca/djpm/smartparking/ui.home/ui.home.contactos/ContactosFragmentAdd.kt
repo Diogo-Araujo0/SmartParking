@@ -1,6 +1,7 @@
 package ipca.djpm.smartparking.ui.home.ui.home.contactos
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ipca.djpm.smartparking.DatabaseHelper
@@ -24,6 +26,7 @@ class ContactosFragmentAdd: Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentContactosAddBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -80,16 +83,20 @@ class ContactosFragmentAdd: Fragment() {
                 val databaseHelper = DatabaseHelper()
                 var query = "SELECT numAluno FROM Aluno_Utilizador WHERE utilizadorID = ${userID}"
                 val resultSelect = context?.let { databaseHelper.selectQuery(query, it) }
-                if(resultSelect!!.next()) {
-                    val numAluno = resultSelect.getInt("numAluno")
-                    query = "INSERT INTO ContactoAluno(tipoContactoID, numAluno, numero) VALUES('${tipoContactoID}',${numAluno}, ${numero.toInt()})"
-                    val result = context?.let { databaseHelper.executeQuery(query, it) }
-                    if (result == true) {
-                        Toast.makeText(context, "Contacto adicionado com sucesso", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
-                    }else{
-                        Toast.makeText(context, "Erro ao adicionar contacto", Toast.LENGTH_SHORT).show()
+                if (resultSelect != null) {
+                    if(resultSelect.next()) {
+                        val numAluno = resultSelect.getInt("numAluno")
+                        query = "INSERT INTO ContactoAluno(tipoContactoID, numAluno, numero) VALUES('${tipoContactoID}',${numAluno}, ${numero.toInt()})"
+                        val result = context?.let { databaseHelper.executeQuery(query, it) }
+                        if (result == true) {
+                            Toast.makeText(context, "Contacto adicionado com sucesso", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }else{
+                            Toast.makeText(context, "Erro ao adicionar contacto", Toast.LENGTH_SHORT).show()
+                        }
                     }
+                }else{
+                    Toast.makeText(context, "Erro ao adicionar contacto", Toast.LENGTH_SHORT).show()
                 }
             }else{
                 Toast.makeText(context, "Número e/ou tipo de contacto inválido(s)", Toast.LENGTH_SHORT).show()
