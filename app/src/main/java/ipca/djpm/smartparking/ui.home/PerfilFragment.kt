@@ -34,6 +34,7 @@ class PerfilFragment: Fragment() {
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
         var root = binding.root
 
+        val buttonContactos = binding.buttonContactos
         val textViewTempUser = binding.textViewTempUser
         val textViewNome = binding.textViewNome
         val textViewUsername = binding.textViewUsername
@@ -87,6 +88,7 @@ class PerfilFragment: Fragment() {
                         imageView7.visibility = View.VISIBLE
 
                         buttonAlterar.visibility = View.VISIBLE
+                        buttonContactos.visibility = View.VISIBLE
                     }else{
                         textViewTempUser.visibility = View.VISIBLE
                     }
@@ -103,6 +105,10 @@ class PerfilFragment: Fragment() {
             bundle.putInt("codPostal", textViewCodPostal.text.toString().toInt())
             findNavController().navigate(R.id.action_navigation_perfil_to_navigation_perfil_editar,bundle)
         }
+        buttonContactos.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_perfil_to_navigation_contactos)
+        }
+
         return root
     }
 

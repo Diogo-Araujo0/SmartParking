@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_navigation_perfil_to_navigation_perfil_editar"
             app:destination="@id/navigation_perfil_editar" />
+        <action
+            android:id="@+id/action_navigation_perfil_to_navigation_contactos"
+            app:destination="@id/navigation_contactos" />
     </fragment>
     <fragment
         android:id="@+id/navigation_veiculos"
@@ -42,6 +45,18 @@
         android:id="@+id/navigation_veiculos_add"
         android:name="ipca.djpm.smartparking.ui.home.ui.home.veiculos.VeículosFragmentAdd"
         android:label="Adicionar Veículo" />
+    <fragment
+        android:id="@+id/navigation_contactos"
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragment"
+        android:label="ContactosFragment" >
+        <action
+            android:id="@+id/action_navigation_contactos_to_contactosFragmentAdd"
+            app:destination="@id/navigation_contactos_add" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_contactos_add"
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragmentAdd"
+        android:label="ContactosFragmentAdd" />
 
 
 </navigation>
