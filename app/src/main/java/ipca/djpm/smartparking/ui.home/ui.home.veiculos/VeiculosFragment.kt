@@ -7,8 +7,10 @@ import android.os.Looper
 import android.view.*
 import android.widget.BaseAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ipca.djpm.smartparking.DatabaseHelper
 import ipca.djpm.smartparking.R
 import ipca.djpm.smartparking.Veiculo
@@ -36,13 +38,14 @@ class VeiculosFragment: Fragment() {
 
         val progressBar = binding.progressBar
         val textViewSemVeiculos = binding.textViewSemVeiculos
+        val floatingActionButtonAddVeiculo = binding.floatingActionButtonAddVeiculo
 
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 if(userID != -1){
                     val query = "SELECT Veiculo.matricula, TipoVeiculo.descricao FROM Veiculo JOIN Utilizador_Veiculo ON Veiculo.matricula = Utilizador_Veiculo.matricula JOIN TipoVeiculo ON Veiculo.tipoVeiculoID = TipoVeiculo.tipoVeiculoID WHERE Utilizador_Veiculo.utilizadorID = ${userID} GROUP BY Veiculo.matricula, TipoVeiculo.descricao"
                     val databaseHelper = DatabaseHelper()
-                    val result = context?.let { databaseHelper.executeQuery(query, it) }
+                    val result = context?.let { databaseHelper.selectQuery(query, it) }
                     if (result != null) {
                         while(result.next()){
                             var matricula = result.getString("matricula")
@@ -59,6 +62,11 @@ class VeiculosFragment: Fragment() {
                     }
                 }
             }, 1)
+
+
+        floatingActionButtonAddVeiculo.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_veiculos_to_veículosFragmentAdd)
+        }
         return root
     }
 
@@ -72,6 +80,7 @@ class VeiculosFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        veiculos.clear()
         _binding = null
     }
 
@@ -109,9 +118,32 @@ class VeiculosFragment: Fragment() {
 
             val textViewMatricula = rootView.findViewById<TextView>(R.id.textViewMatricula)
             val textViewTipoVeiculo = rootView.findViewById<TextView>(R.id.textViewTipoVeiculo)
+            val floatingActionButtonDeleteVeiculo = rootView.findViewById<FloatingActionButton>(R.id.floatingActionButtonDeleteVeiculo)
+            val progressBar = binding.progressBar
 
             textViewMatricula.text = veiculos[position].matricula
             textViewTipoVeiculo.text = veiculos[position].tipoveiculo
+
+            floatingActionButtonDeleteVeiculo.setOnClickListener{
+                progressBar.visibility = View.VISIBLE
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        if (userID != -1) {
+                            val query =
+                                "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
+                            val databaseHelper = DatabaseHelper()
+                            val result = context?.let { databaseHelper.selectQuery(query, it) }
+                            if (result == null) {
+                                Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
+                                progressBar.visibility = View.INVISIBLE
+                                adapter.notifyDataSetChanged()
+                            } else {
+                                Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
+                                progressBar.visibility = View.INVISIBLE
+                            }
+                        }
+                    }, 1)
+            }
 
             return rootView
         }

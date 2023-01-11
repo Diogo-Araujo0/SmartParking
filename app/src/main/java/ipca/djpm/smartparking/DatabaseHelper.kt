@@ -35,7 +35,7 @@ class DatabaseHelper {
         }
     }
 
-    fun executeQuery(query : String, context: Context): ResultSet? {
+    fun selectQuery(query : String, context: Context): ResultSet? {
         var result: ResultSet? = null
         if(con == null){
             connectionToServer(context)
@@ -46,14 +46,30 @@ class DatabaseHelper {
         }
         catch (e: SQLException) {
             e.printStackTrace()
-            Toast.makeText(context, "Erro de ligação à base de dados", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Erro ao executar pedido", Toast.LENGTH_SHORT).show()
         }
         return result
     }
 
+    fun executeQuery(query : String, context: Context): Boolean{
+        if(con == null){
+            connectionToServer(context)
+        }
+        try {
+            val statement: Statement = con!!.createStatement()
+            statement.execute(query)
+            return true
+        }
+        catch (e: SQLException) {
+            e.printStackTrace()
+            Toast.makeText(context, "Erro ao executar pedido", Toast.LENGTH_SHORT).show()
+        }
+        return false
+    }
+
     fun login(email: String, password: String, context: Context): Int{
         val query = "SELECT utilizadorID FROM Utilizador WHERE username='$email' AND password='$password'"
-        val result = executeQuery(query, context)
+        val result = selectQuery(query, context)
         if (result!!.next()) {
             val utilizadorID = result.getInt("utilizadorID")
             val sharedPreferences = context.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)

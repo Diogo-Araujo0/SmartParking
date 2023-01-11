@@ -42,7 +42,7 @@ class LoginActivity: AppCompatActivity() {
                     Toast.makeText(this, "Email e/ou password errados", Toast.LENGTH_SHORT).show()
                 }
             }else{
-                Toast.makeText(this, "Username e/ou password não podem estar vazios", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Username e/ou password não podem estar vazio(s)", Toast.LENGTH_SHORT).show()
             }
         }
 
