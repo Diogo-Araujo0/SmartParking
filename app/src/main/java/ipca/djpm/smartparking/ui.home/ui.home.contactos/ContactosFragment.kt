@@ -44,14 +44,13 @@ class ContactosFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 if(userID != -1){
-                    val query = "Select ContactoAluno.numero , TipoContacto.tipoContactoID FROM ContactoAluno JOIN Aluno_Utilizador on Aluno_Utilizador.numAluno = ContactoAluno.numAluno Join TipoContacto on TipoContacto.tipoContactoID = ContactoAluno.tipoContactoID Where utilizadorID = ${userID}"
+                    val query = "SELECT ContactoAluno.numero, TipoContacto.descricao FROM ContactoAluno JOIN Aluno_Utilizador ON Aluno_Utilizador.numAluno = ContactoAluno.numAluno JOIN TipoContacto ON TipoContacto.tipoContactoID = ContactoAluno.tipoContactoID WHERE utilizadorID = ${userID}"
                     val databaseHelper = DatabaseHelper()
                     val result = context?.let { databaseHelper.selectQuery(query, it) }
                     if (result != null) {
                         while(result.next()){
-                            var numero = result.getString("numero")
-                            var tipoContacto = result.getString("tipoContactoID")
-                            numero = numero.replace("\\s+".toRegex(), "")
+                            var numero = result.getInt("numero")
+                            var tipoContacto = result.getString("descricao")
                             tipoContacto = tipoContacto.replace("\\s+".toRegex(), "")
                             val contacto = Contacto(numero, tipoContacto)
                             contactos.add(contacto)
@@ -124,7 +123,7 @@ class ContactosFragment : Fragment() {
             val floatingActionButtonDeleteContacto = rootView.findViewById<FloatingActionButton>(R.id.floatingActionButtonDeleteContacto)
             val progressBar = binding.progressBar
 
-            textViewNumero.text = contactos[position].numero
+            textViewNumero.text = contactos[position].numero.toString()
             textViewTipoContacto.text = contactos[position].tipocontacto
 
             floatingActionButtonDeleteContacto.setOnClickListener{
