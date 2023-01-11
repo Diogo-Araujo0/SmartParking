@@ -40,7 +40,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Tipo de contacto:"
+        android:text="Tipo de cont.:"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

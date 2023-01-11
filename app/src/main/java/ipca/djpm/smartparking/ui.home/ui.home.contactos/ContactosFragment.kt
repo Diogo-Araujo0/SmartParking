@@ -24,7 +24,7 @@ class ContactosFragment : Fragment() {
 
     var contactos = arrayListOf<Contacto>()
 
-    val adapter = VeiculoAdapter()
+    val adapter = ContactoAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,7 @@ class ContactosFragment : Fragment() {
                     val result = context?.let { databaseHelper.selectQuery(query, it) }
                     if (result != null) {
                         while(result.next()){
-                            var numero = result.getInt("numero")
+                            val numero = result.getInt("numero")
                             var tipoContacto = result.getString("descricao")
                             tipoContacto = tipoContacto.replace("\\s+".toRegex(), "")
                             val contacto = Contacto(numero, tipoContacto)
@@ -102,7 +102,7 @@ class ContactosFragment : Fragment() {
         }
     }
 
-    inner class VeiculoAdapter : BaseAdapter() {
+    inner class ContactoAdapter : BaseAdapter() {
         override fun getCount(): Int {
             return contactos.size
         }
@@ -132,15 +132,8 @@ class ContactosFragment : Fragment() {
                     {
                         if (userID != -1) {
                             val databaseHelper = DatabaseHelper()
-                            var query = "SELECT COUNT(numAluno) as contador from ContactoAluno WHERE numero = '${contactos[position].numero}'"
-                            val resultSelect = context?.let { databaseHelper.selectQuery(query, it) }
-                            if(resultSelect!!.next()){
-                                var result: Boolean
-
-
-                                query = "Delete ContactoAluno FROM ContactoAluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = ContactoAluno.numAluno Where numero = ${contactos[position].numero} AND utilizadorID = ${userID}"
-                                result = context?.let { databaseHelper.executeQuery(query, it) }!!
-
+                                val query = "Delete contactoAluno FROM ContactoAluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = ContactoAluno.numAluno Where numero = ${contactos[position].numero} AND utilizadorID = ${userID}"
+                                val result = context?.let { databaseHelper.executeQuery(query, it) }!!
                                 if (result) {
                                     Toast.makeText(context, "Contacto removido com sucesso", Toast.LENGTH_SHORT).show()
                                     progressBar.visibility = View.INVISIBLE
@@ -151,8 +144,6 @@ class ContactosFragment : Fragment() {
                                     progressBar.visibility = View.INVISIBLE
                                 }
                             }
-
-                        }
                     }, 1)
             }
 

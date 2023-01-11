@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/navigation_contactos"
         android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragment"
-        android:label="ContactosFragment" >
+        android:label="Contactos">
         <action
             android:id="@+id/action_navigation_contactos_to_contactosFragmentAdd"
             app:destination="@id/navigation_contactos_add" />
@@ -58,6 +58,6 @@
     <fragment
         android:id="@+id/navigation_contactos_add"
         android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragmentAdd"
-        android:label="ContactosFragmentAdd" />
+        android:label="Adicionar Contacto" />
 
 </navigation>
