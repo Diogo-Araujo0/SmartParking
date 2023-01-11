@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
                         val resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
                         if (resultQuery!!.next()) {
                             var ocupado = resultQuery.getInt("ocupado")
-                            if(ocupado == 1){
+                            if (ocupado == 1){
                                 ocupado = 0
                             }else{
                                 ocupado = 1

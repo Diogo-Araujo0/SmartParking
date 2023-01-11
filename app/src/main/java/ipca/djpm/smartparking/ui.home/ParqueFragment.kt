@@ -1,6 +1,5 @@
 package ipca.djpm.smartparking.ui.home
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -10,11 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ipca.djpm.smartparking.DatabaseHelper
 import ipca.djpm.smartparking.Lugar
 import ipca.djpm.smartparking.R
-import ipca.djpm.smartparking.Veiculo
 import ipca.djpm.smartparking.databinding.FragmentParqueBinding
 
 class ParqueFragment : Fragment() {
@@ -24,7 +21,7 @@ class ParqueFragment : Fragment() {
     private var arrayEscolas = arrayListOf<String>()
     private var lugaresLivres : Int = 0
 
-    val adapter = LugarAdapter()
+    private val adapter = LugarAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +44,8 @@ class ParqueFragment : Fragment() {
         val databaseHelper = DatabaseHelper()
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                    var query = "SELECT nomeEscola FROM Escola"
-                    var resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
+                    val query = "SELECT nomeEscola FROM Escola"
+                    val resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
                     if (resultQuery != null) {
                         while(resultQuery.next()){
                             var nomeEscola = resultQuery.getString("nomeEscola")
@@ -96,16 +93,16 @@ class ParqueFragment : Fragment() {
         binding.progressBarParque.visibility = View.VISIBLE
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                    var query = "SELECT numLugar, ocupado FROM Estacionamento WHERE escolaID=${escolaID}"
-                    var resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
+                    val query = "SELECT numLugar, ocupado FROM Estacionamento WHERE escolaID=${escolaID}"
+                    val resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
                     if (resultQuery != null) {
                         while(resultQuery.next()){
-                            var numLugar = resultQuery.getInt("numLugar")
-                            var ocupado = resultQuery.getInt("ocupado")
+                            val numLugar = resultQuery.getInt("numLugar")
+                            val ocupado = resultQuery.getInt("ocupado")
                             if(ocupado == 0){
                                 lugaresLivres += 1
                             }
-                            var lugar = Lugar(numLugar, ocupado)
+                            val lugar = Lugar(numLugar, ocupado)
                             lugares.add(lugar)
                         }
                         binding.textViewLugares.text = "Lugares livres: ${lugaresLivres}"

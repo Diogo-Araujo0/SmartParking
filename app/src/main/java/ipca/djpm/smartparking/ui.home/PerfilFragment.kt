@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.strictmode.Violation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,61 +39,70 @@ class PerfilFragment: Fragment() {
         val textViewUsername = binding.textViewUsername
         val textViewCartaoCidadao = binding.textViewCartaoCidadao
         val textViewMorada = binding.textViewMorada
-        val textViewContactos = binding.textViewContactos
         val textViewSexo = binding.textViewSexo
         val textViewCodPostal = binding.textViewCodPostal
+        val textViewDataNascimento = binding.textViewDataNascimento
+        val buttonAlterar = binding.buttonAlterar
+        val progressBarPerfil = binding.progressBarPerfil
 
+        val imageView7 = binding.imageView7
+        val imageView2 = binding.imageView2
+        val imageView10 = binding.imageView10
+        val imageView11 = binding.imageView11
+        val imageView5 = binding.imageView5
+        val imageView6 = binding.imageView6
+        val imageView9 = binding.imageView9
 
         val sharedPreferences = requireContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         userID = sharedPreferences.getInt("USER_ID", -1)
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 if(userID != -1){
-                    val query = "Select Utilizador.username,Aluno.cartaoCidadao,Aluno.morada,Aluno.nome,Aluno.sexo,Aluno.codPostal,ContactoAluno.numero FROM Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Join Utilizador on Utilizador.utilizadorId = Aluno_Utilizador.utilizadorID Join ContactoAluno on ContactoAluno.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID} "
+                    val query = "SELECT username, cartaoCidadao, morada, nome, sexo, codPostal, CONVERT(date, dataNascimento) as dataNascimento FROM Aluno JOIN Aluno_Utilizador ON Aluno_Utilizador.numAluno = Aluno.numAluno JOIN Utilizador ON Utilizador.utilizadorId = Aluno_Utilizador.utilizadorID WHERE Utilizador.utilizadorID = ${userID}"
                     val databaseHelper = DatabaseHelper()
                     val result = context?.let { databaseHelper.selectQuery(query, it) }
-                    if (result != null) {
-                        while(result.next()){
+                    if (result!!.next()) {
+                        textViewNome.text = result.getString("nome")
+                        textViewUsername.text = result.getString("username")
+                        textViewCartaoCidadao.text = result.getInt("cartaoCidadao").toString()
+                        textViewMorada.text = result.getString("morada")
+                        textViewDataNascimento.text = result.getString("dataNascimento").toString()
+                        textViewSexo.text = result.getString("sexo")
+                        textViewCodPostal.text = result.getInt("codPostal").toString()
 
+                        textViewNome.visibility = View.VISIBLE
+                        textViewUsername.visibility = View.VISIBLE
+                        textViewCartaoCidadao.visibility = View.VISIBLE
+                        textViewMorada.visibility = View.VISIBLE
+                        textViewSexo.visibility = View.VISIBLE
+                        textViewCodPostal.visibility = View.VISIBLE
+                        textViewDataNascimento.visibility = View.VISIBLE
 
-                            textViewNome.text = result.getString("nome")
-                            textViewUsername.text = result.getString("username")
-                            textViewCartaoCidadao.text = result.getInt("cartaoCidadao").toString()
-                            textViewMorada.text = result.getString("morada")
-                            textViewContactos.text = result.getInt("numero").toString()
-                            textViewSexo.text = result.getString("sexo")
-                            textViewCodPostal.text = result.getInt("codPostal").toString()
+                        imageView9.visibility = View.VISIBLE
+                        imageView6.visibility = View.VISIBLE
+                        imageView5.visibility = View.VISIBLE
+                        imageView11.visibility = View.VISIBLE
+                        imageView10.visibility = View.VISIBLE
+                        imageView2.visibility = View.VISIBLE
+                        imageView7.visibility = View.VISIBLE
 
-                            val bundle = Bundle()
-
-                            bundle.putString("nome", result.getString("nome"))
-                            bundle.putString("username", result.getString("username"))
-                            bundle.putInt("cartaoCidadao", result.getInt("cartaoCidadao"))
-                            bundle.putString("morada", result.getString("morada"))
-                            bundle.putInt("numero", result.getInt("numero"))
-                            bundle.putString("sexo", result.getString("sexo"))
-                            bundle.putInt("codPostal", result.getInt("codPostal"))
-
-
-
-
-                            var buttonAlterar = binding.buttonAlterar
-
-
-                            buttonAlterar.setOnClickListener{
-                                findNavController().navigate(R.id.action_navigation_perfil_to_navigation_perfil_editar,bundle)
-                            }
-
-
-                        }
-
+                        buttonAlterar.visibility = View.VISIBLE
                     }else{
-
                         textViewTempUser.visibility = View.VISIBLE
-
                     }
+                    progressBarPerfil.visibility = View.INVISIBLE
                 }
-            }, 1)
+            }, 100)
+        buttonAlterar.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putString("nome", textViewNome.text.toString())
+            bundle.putString("username", textViewUsername.text.toString())
+            bundle.putString("cartaoCidadao", textViewCartaoCidadao.text.toString())
+            bundle.putString("morada", textViewMorada.text.toString())
+            bundle.putString("sexo", textViewSexo.text.toString())
+            bundle.putInt("codPostal", textViewCodPostal.text.toString().toInt())
+            findNavController().navigate(R.id.action_navigation_perfil_to_navigation_perfil_editar,bundle)
+        }
         return root
     }
 

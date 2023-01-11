@@ -1,14 +1,18 @@
 package ipca.djpm.smartparking.ui.home
 
+import android.R
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ipca.djpm.smartparking.DatabaseHelper
-import ipca.djpm.smartparking.R
 import ipca.djpm.smartparking.databinding.FragmentEditarPerfilBinding
 
 class EditarPerfilFragment: Fragment() {
@@ -16,10 +20,9 @@ class EditarPerfilFragment: Fragment() {
     private var _binding: FragmentEditarPerfilBinding? = null
     private val binding get() = _binding!!
     private var userID : Int? = null
-    private var arrayCartaoCidadao = arrayListOf<String>()
-
-
-
+    private var savedUser : String? = null
+    private var arrayCodPostais = arrayListOf<Int>()
+    private var codPostal : Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,78 +34,115 @@ class EditarPerfilFragment: Fragment() {
 
         val sharedPreferences = requireContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         userID = sharedPreferences.getInt("USER_ID", -1)
+        savedUser = sharedPreferences.getString("USER", null)
 
         val editTextNome = binding.editTextNome
         val editTextUsername = binding.editTextUsername
         val editTextCartaoCidadao = binding.editTextCartaoCidadao
         val editTextMorada = binding.editTextMorada
-        val editTextContacto = binding.editTextContacto
-        val editTextSexo = binding.editTextSexo
-        val editTextCodPostal = binding.editTextCodPostal
+        val radioGroupSexo = binding.radioGroupSexo
+        val spinnerCodPostais = binding.spinnerCodPostais
+        val buttonEditar = binding.buttonEditar
+        val progressBarEditUser = binding.progressBarEditUser
+        val imageViewNome = binding.imageViewNome
+        val imageViewUser = binding.imageViewUser
+        val imageViewCC = binding.imageViewCC
+        val imageViewMorada = binding.imageViewMorada
+        val imageViewSexo = binding.imageViewSexo
+        val imageViewCodPostal = binding.imageViewCodPostal
 
         val args = arguments
+        var nome = args?.getString("nome")
+        var username = args?.getString("username")
+        var cartaoCidadao = args?.getString("cartaoCidadao")
+        var morada = args?.getString("morada")
+        var sexo = args?.getString("sexo")
+        codPostal = args?.getInt("codPostal")!!
 
-        val nome = args?.getString("nome")
-        val username = args?.getString("username")
-        val cartaoCidadao = args?.getInt("cartaoCidadao")
-        val morada = args?.getString("morada")
-        val numero = args?.getInt("numero")
-        val sexo = args?.getString("sexo")
-        val codPostal = args?.getInt("codPostal")
+        nome = nome!!.replace("\\s+".toRegex(), " ")
+        username = username!!.replace("\\s+".toRegex(), "")
+        cartaoCidadao = cartaoCidadao!!.replace("\\s+".toRegex(), "")
+        morada = morada!!.replace("\\s+".toRegex(), " ")
+        sexo = sexo!!.replace("\\s+".toRegex(), "")
 
         editTextNome.setText(nome)
         editTextUsername.setText(username)
-        editTextCartaoCidadao.setText(cartaoCidadao.toString())
+        editTextCartaoCidadao.setText(cartaoCidadao)
         editTextMorada.setText(morada)
-        editTextContacto.setText(numero.toString())
-        editTextSexo.setText(sexo)
-        editTextCodPostal.setText(codPostal.toString())
 
-        var buttonEditar = binding.buttonEditar
-        val databaseHelper = DatabaseHelper()
-
-        val query = "SELECT cartaoCidadao FROM Aluno"
-        var result = context?.let { databaseHelper.selectQuery(query, it) }
-        if (result != null){
-            while (result.next()) {
-                var cartaoCidadao = result.getInt("cartaoCidadao").toString()
-                arrayCartaoCidadao.add(cartaoCidadao)
-            }
-        }else{
-            Toast.makeText(context, "Erro ao obter dados do Aluno", Toast.LENGTH_SHORT).show()
+        if(sexo == "Masculino"){
+            binding.radioButtonMasculino.isChecked = true
+        }else if(sexo == "Feminino"){
+            binding.radioButtonFeminino.isChecked = true
         }
 
+        val databaseHelper = DatabaseHelper()
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                val query = "SELECT codPostal FROM CodPostal"
+                val resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
+                if (resultQuery != null) {
+                    while(resultQuery.next()){
+                        var codPostal = resultQuery.getInt("codPostal")
+                        arrayCodPostais.add(codPostal)
+                    }
+                    val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, arrayCodPostais)
+                    spinnerCodPostais.adapter = adapter
+                    spinnerCodPostais.setSelection(arrayCodPostais.indexOf(codPostal))
+                    progressBarEditUser.visibility = View.INVISIBLE
+                    editTextNome.visibility = View.VISIBLE
+                    editTextUsername.visibility = View.VISIBLE
+                    editTextCartaoCidadao.visibility = View.VISIBLE
+                    editTextMorada.visibility = View.VISIBLE
+                    radioGroupSexo.visibility = View.VISIBLE
+                    spinnerCodPostais.visibility = View.VISIBLE
+                    buttonEditar.visibility = View.VISIBLE
+                    imageViewNome.visibility = View.VISIBLE
+                    imageViewUser.visibility = View.VISIBLE
+                    imageViewCC.visibility = View.VISIBLE
+                    imageViewMorada.visibility = View.VISIBLE
+                    imageViewSexo.visibility = View.VISIBLE
+                    imageViewCodPostal.visibility = View.VISIBLE
+
+                }else{
+                    Toast.makeText(context, "Erro ao obter códigos postais", Toast.LENGTH_SHORT).show()
+                }
+            },100)
+        spinnerCodPostais.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                codPostal = spinnerCodPostais.selectedItem.toString().toInt()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
+
+
         buttonEditar.setOnClickListener{
-            var username = editTextNome.text.toString()
-            var cartaoCidadao = editTextCartaoCidadao.text.toString()
-            var morada = editTextMorada.text.toString()
-            var numero = editTextContacto.text.toString()
-            val databaseHelper = DatabaseHelper()
-            if(!arrayCartaoCidadao.contains(cartaoCidadao)) {
-                val query = "Update Aluno Set nome= ${nome}, cartaoCidadao= ${cartaoCidadao}, morada= ${morada}, sexo = ${sexo}, codPostal = ${codPostal} From Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID}"
-                var result = context?.let { databaseHelper.executeQuery(query, it) }
-                if (result == true) {
-                   val query = "Update ContactoAluno set numero= ${numero} From ContactoAluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = ContactoAluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID}"
+            val selectedOption: Int = radioGroupSexo.checkedRadioButtonId
+            val radioButton = view?.findViewById<RadioButton>(selectedOption)
+            var query = "UPDATE Aluno SET nome= '${editTextNome.text}', cartaoCidadao= ${editTextCartaoCidadao.text}, morada='${editTextMorada.text}', sexo = '${radioButton!!.text}', codPostal = ${codPostal} FROM Aluno JOIN Aluno_Utilizador ON Aluno_Utilizador.numAluno = Aluno.numAluno WHERE Aluno_Utilizador.utilizadorID = ${userID}"
+            var result = context?.let { databaseHelper.executeQuery(query, it) }
+            if (result == true) {
+
+                if(savedUser != editTextUsername.text.toString()){
+                    query = "UPDATE Utilizador SET username = '${editTextUsername.text}' WHERE utilizadorID=${userID}"
                     result = context?.let { databaseHelper.executeQuery(query, it) }
                     if (result == true) {
-                        val query = "Update Utilizador set username = ${username} From Utilizador Where Utilizador.utilizadorID = ${userID}"
-                        result = context?.let { databaseHelper.executeQuery(query, it) }
-                        if (result == true) {
-                            Toast.makeText(context, "Perfil alterado com sucesso", Toast.LENGTH_SHORT).show()
-                            findNavController().popBackStack()
-                        }else{
-                            Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
-                        }
+                        val sharedPreferences = context?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences?.edit()
+                        editor?.apply{
+                            putString("USER", editTextUsername.text.toString())
+                        }?.apply()
                     }else{
-                        Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Erro ao alterar username", Toast.LENGTH_SHORT).show()
                     }
-                }else{
-                    Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
                 }
-            }else {
-                Toast.makeText(context, "Cartão de cidadão já existente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Perfil alterado com sucesso", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }else{
+                Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
             }
-
         }
 
         return root
