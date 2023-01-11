@@ -21,15 +21,19 @@
     <fragment
         android:id="@+id/navigation_perfil"
         android:name="ipca.djpm.smartparking.ui.home.PerfilFragment"
-        android:label="Perfil"/>
+        android:label="Perfil">
+        <action
+            android:id="@+id/action_navigation_perfil_to_navigation_perfil_editar"
+            app:destination="@id/navigation_perfil_editar" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_veiculos"
         android:name="ipca.djpm.smartparking.ui.home.VeiculosFragment"
         android:label="Veículos" />
     <fragment
-        android:id="@+id/navigation_editarPerfil"
+        android:id="@+id/navigation_perfil_editar"
         android:name="ipca.djpm.smartparking.ui.home.EditarPerfilFragment"
-        android:label="EditarPerfilFragment" />
+        android:label="Editar Perfil" />
 
 
 </navigation>

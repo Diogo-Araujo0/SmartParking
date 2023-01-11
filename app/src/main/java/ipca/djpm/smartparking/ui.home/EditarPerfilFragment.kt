@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ipca.djpm.smartparking.LoginActivity
 import ipca.djpm.smartparking.databinding.FragmentEditarPerfilBinding
 
 class EditarPerfilFragment: Fragment() {

@@ -52,7 +52,7 @@ class PerfilFragment: Fragment() {
                 if(userID != -1){
                     val query = "Select Utilizador.username,Aluno.cartaoCidadao,Aluno.morada,ContactoAluno.numero FROM Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Join Utilizador on Utilizador.utilizadorId = Aluno_Utilizador.utilizadorID Join ContactoAluno on ContactoAluno.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID} "
                     val databaseHelper = DatabaseHelper()
-                    val result = context?.let { databaseHelper.executeQuery(query, it) }
+                    val result = context?.let { databaseHelper.selectQuery(query, it) }
                     if (result != null) {
                         while(result.next()){
 
@@ -64,7 +64,7 @@ class PerfilFragment: Fragment() {
                             var buttonLogout = binding.buttonAlterar
 
                             buttonLogout.setOnClickListener{
-                                findNavController().navigate(R.id.action_navigation_home_to_navigation_editarPerfil)
+                                findNavController().navigate(R.id.action_navigation_perfil_to_navigation_perfil_editar)
                             }
 
 
