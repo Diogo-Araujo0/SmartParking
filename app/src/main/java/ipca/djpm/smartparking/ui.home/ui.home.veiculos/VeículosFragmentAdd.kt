@@ -1,4 +1,4 @@
-package ipca.djpm.smartparking.ui.home.ui.home.veiculos
+package ipca.djpm.smartparking.ui.home.ui.home
 
 import android.content.Context
 import android.os.Bundle
@@ -91,38 +91,43 @@ class VeiculosFragmentAdd: Fragment() {
 
         buttonAdd.setOnClickListener{
             var matricula = editTextAddVeiculoMatricula.text.toString()
-            matricula = matricula.uppercase()
-            if(tipoVeiculoID != -1 && verificarMatricula(matricula)){
-                val databaseHelper = DatabaseHelper()
-                if(!arrayMatriculas.contains(matricula)){
-                    val query = "INSERT INTO Veiculo(matricula, tipoVeiculoID) VALUES('${matricula}', ${tipoVeiculoID})"
-                    var result = context?.let { databaseHelper.executeQuery(query, it) }
-                    if (result == true) {
+            if(matricula.isNotBlank()) {
+                matricula = matricula.uppercase()
+                if(tipoVeiculoID != -1 && verificarMatricula(matricula)){
+                    val databaseHelper = DatabaseHelper()
+                    if(!arrayMatriculas.contains(matricula)){
+                        val query = "INSERT INTO Veiculo(matricula, tipoVeiculoID) VALUES('${matricula}', ${tipoVeiculoID})"
+                        var result = context?.let { databaseHelper.executeQuery(query, it) }
+                        if (result == true) {
+                            val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
+                            result = context?.let { databaseHelper.executeQuery(query, it) }
+                            if (result == true) {
+                                Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
+                                findNavController().popBackStack()
+                            }else{
+                                Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
+                            }
+                        }else{
+                            Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Toast.makeText(context, "Veículo já existente", Toast.LENGTH_SHORT).show()
                         val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
-                        result = context?.let { databaseHelper.executeQuery(query, it) }
+                        val result = context?.let { databaseHelper.executeQuery(query, it) }
                         if (result == true) {
                             Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
                             findNavController().popBackStack()
                         }else{
                             Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
                         }
-                    }else{
-                        Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
                     }
                 }else{
-                    Toast.makeText(context, "Veículo já existente", Toast.LENGTH_SHORT).show()
-                    val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
-                    val result = context?.let { databaseHelper.executeQuery(query, it) }
-                    if (result == true) {
-                        Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
-                    }else{
-                        Toast.makeText(context, "Erro ao adicionar veículo", Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(context, "Matrícula e/ou tipo de veículo inválido(s)", Toast.LENGTH_SHORT).show()
                 }
             }else{
-                Toast.makeText(context, "Matricula e/ou tipo de veículo inválido(s)", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Matrícula não pode esta vazia", Toast.LENGTH_SHORT).show()
             }
+
         }
         return root
     }

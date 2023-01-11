@@ -103,16 +103,29 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
         android:layout_height="29dp"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="78dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="150dp"
         android:text="Novo Utilizador?"
         android:textAlignment="viewStart"
         android:textColor="@color/green_ipca"
         android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLoginPassword" />
+
+    <Button
+        android:id="@+id/buttonForgotPass"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="48dp"
+        android:text="Esqueçi-me da password"
+        android:textAlignment="viewStart"
+        android:textColor="@color/green_ipca"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonNewUser"
         app:layout_constraintTop_toBottomOf="@+id/editTextLoginPassword" />
 
     <CheckBox
