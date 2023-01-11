@@ -11,7 +11,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="64dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/buttonVeiculos"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,19 +22,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="120dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="64dp"
         android:fontFamily="sans-serif-medium"
         android:text="Olá, Utilizador!"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="34sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/progressBarHome"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLugar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonVeiculos"
@@ -42,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
-        android:text="Veiculos"
+        android:text="Veículos"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,5 +59,21 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonVeiculos" />
+
+    <TextView
+        android:id="@+id/textViewLugar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Lugar:"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonVeiculos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
