@@ -44,7 +44,7 @@ class VeículosFragmentAdd: Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                var query = "SELECT descricao FROM TipoVeiculo"
+                var query = "SELECT descricao FROM TipoVeiculo ORDER BY tipoVeiculoID"
                 val databaseHelper = DatabaseHelper()
                 var result = context?.let { databaseHelper.selectQuery(query, it) }
                 if (result != null && spinnerTipoVeiculo != null) {

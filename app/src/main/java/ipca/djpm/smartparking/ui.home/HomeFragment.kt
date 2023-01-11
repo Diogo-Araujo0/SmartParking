@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
         val textViewBoasVindas = binding.textViewBoasVindas
         val progressBar = binding.progressBarHome
         val textViewLugar = binding.textViewLugar
-
+        progressBar.visibility = View.VISIBLE
         val databaseHelper = DatabaseHelper()
         Handler(Looper.getMainLooper()).postDelayed(
             {
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
                     textViewBoasVindas.visibility = View.VISIBLE
                     textViewLugar.visibility = View.VISIBLE
                 }
-            }, 1)
+            }, 100)
 
         buttonVeiculos.setOnClickListener{
             findNavController().navigate(R.id.action_navigation_home_to_navigation_veiculos)
