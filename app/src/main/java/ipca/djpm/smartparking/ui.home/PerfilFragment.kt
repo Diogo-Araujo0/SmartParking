@@ -40,31 +40,53 @@ class PerfilFragment: Fragment() {
         var root = binding.root
 
         val textViewTempUser = binding.textViewTempUser
+        val textViewNome = binding.textViewNome
         val textViewUsername = binding.textViewUsername
         val textViewCartaoCidadao = binding.textViewCartaoCidadao
         val textViewMorada = binding.textViewMorada
         val textViewContactos = binding.textViewContactos
+        val textViewSexo = binding.textViewSexo
+        val textViewCodPostal = binding.textViewCodPostal
+
 
         val sharedPreferences = requireContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         userID = sharedPreferences.getInt("USER_ID", -1)
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 if(userID != -1){
-                    val query = "Select Utilizador.username,Aluno.cartaoCidadao,Aluno.morada,ContactoAluno.numero FROM Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Join Utilizador on Utilizador.utilizadorId = Aluno_Utilizador.utilizadorID Join ContactoAluno on ContactoAluno.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID} "
+                    val query = "Select Utilizador.username,Aluno.cartaoCidadao,Aluno.morada,Aluno.nome,Aluno.sexo,Aluno.codPostal,ContactoAluno.numero FROM Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Join Utilizador on Utilizador.utilizadorId = Aluno_Utilizador.utilizadorID Join ContactoAluno on ContactoAluno.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID} "
                     val databaseHelper = DatabaseHelper()
                     val result = context?.let { databaseHelper.selectQuery(query, it) }
                     if (result != null) {
                         while(result.next()){
 
+
+                            textViewNome.text = result.getString("nome")
                             textViewUsername.text = result.getString("username")
-                            textViewCartaoCidadao.text = result.getString("cartaoCidadao")
+                            textViewCartaoCidadao.text = result.getInt("cartaoCidadao").toString()
                             textViewMorada.text = result.getString("morada")
                             textViewContactos.text = result.getInt("numero").toString()
+                            textViewSexo.text = result.getString("sexo")
+                            textViewCodPostal.text = result.getInt("codPostal").toString()
 
-                            var buttonLogout = binding.buttonAlterar
+                            val bundle = Bundle()
 
-                            buttonLogout.setOnClickListener{
-                                findNavController().navigate(R.id.action_navigation_perfil_to_navigation_perfil_editar)
+                            bundle.putString("nome", result.getString("nome"))
+                            bundle.putString("username", result.getString("username"))
+                            bundle.putInt("cartaoCidadao", result.getInt("cartaoCidadao"))
+                            bundle.putString("morada", result.getString("morada"))
+                            bundle.putInt("numero", result.getInt("numero"))
+                            bundle.putString("sexo", result.getString("sexo"))
+                            bundle.putInt("codPostal", result.getInt("codPostal"))
+
+
+
+
+                            var buttonAlterar = binding.buttonAlterar
+
+
+                            buttonAlterar.setOnClickListener{
+                                findNavController().navigate(R.id.action_navigation_perfil_to_navigation_perfil_editar,bundle)
                             }
 
 
