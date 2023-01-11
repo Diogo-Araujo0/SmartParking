@@ -26,6 +26,10 @@
         android:id="@+id/navigation_veiculos"
         android:name="ipca.djpm.smartparking.ui.home.VeiculosFragment"
         android:label="Veículos" />
+    <fragment
+        android:id="@+id/navigation_editarPerfil"
+        android:name="ipca.djpm.smartparking.ui.home.EditarPerfilFragment"
+        android:label="EditarPerfilFragment" />
 
 
 </navigation>

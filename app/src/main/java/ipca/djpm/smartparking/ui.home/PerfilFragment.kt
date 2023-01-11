@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import ipca.djpm.smartparking.DatabaseHelper
 import ipca.djpm.smartparking.LoginActivity
 import ipca.djpm.smartparking.R
@@ -37,7 +38,7 @@ class PerfilFragment: Fragment() {
     ): View {
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
         var root = binding.root
-        return root
+
         val textViewTempUser = binding.textViewTempUser
         val textViewUsername = binding.textViewUsername
         val textViewCartaoCidadao = binding.textViewCartaoCidadao
@@ -60,6 +61,11 @@ class PerfilFragment: Fragment() {
                             textViewMorada.text = result.getString("morada")
                             textViewContactos.text = result.getInt("numero").toString()
 
+                            var buttonLogout = binding.buttonAlterar
+
+                            buttonLogout.setOnClickListener{
+                                findNavController().navigate(R.id.action_navigation_home_to_navigation_editarPerfil)
+                            }
 
 
                         }
@@ -71,6 +77,7 @@ class PerfilFragment: Fragment() {
                     }
                 }
             }, 1)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
