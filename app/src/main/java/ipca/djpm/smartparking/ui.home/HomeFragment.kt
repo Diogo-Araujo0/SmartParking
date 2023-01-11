@@ -40,24 +40,38 @@ class HomeFragment : Fragment() {
         val buttonEntrarSair = binding.buttonEntrarSair
         val textViewBoasVindas = binding.textViewBoasVindas
         val progressBar = binding.progressBarHome
-
+        val textViewLugar = binding.textViewLugar
 
         val databaseHelper = DatabaseHelper()
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 if(userID != -1) {
-                    var query = "SELECT nome FROM Aluno JOIN Aluno_Utilizador on Aluno.numAluno=Aluno_Utilizador.numAluno JOIN Utilizador on Aluno_Utilizador.utilizadorID=Utilizador.utilizadorID WHERE Utilizador.utilizadorID=${userID}"
-                    val resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
+                    var query = "SELECT nome FROM Aluno JOIN Aluno_Utilizador ON Aluno.numAluno=Aluno_Utilizador.numAluno JOIN Utilizador ON Aluno_Utilizador.utilizadorID=Utilizador.utilizadorID WHERE Utilizador.utilizadorID=${userID}"
+                    var resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
                     if (resultQuery!!.next()) {
                         var nome = resultQuery.getString("nome")
-                        textViewBoasVindas.text = "Olá, "+nome
-                        progressBar.visibility = View.INVISIBLE
-                        buttonVeiculos.visibility = View.VISIBLE
-                        buttonEntrarSair.visibility = View.VISIBLE
-                        textViewBoasVindas.visibility = View.VISIBLE
+                        nome = nome.replace("\\s+".toRegex(), " ")
+                        textViewBoasVindas.text = "Olá, ${nome}"
                     }
+
+                    query = "SELECT nomeEscola, numLugar FROM Utilizador JOIN Escola ON Utilizador.escolaID=Escola.escolaID WHERE Utilizador.utilizadorID=${userID}"
+                    resultQuery = context?.let { databaseHelper.selectQuery(query, it) }
+                    if (resultQuery!!.next()) {
+                        var nomeEscola = resultQuery.getString("nomeEscola")
+                        var numLugar = resultQuery.getString("numLugar")
+                        nomeEscola = nomeEscola.replace("\\s+".toRegex(), "")
+                        numLugar = numLugar.replace("\\s+".toRegex(), "")
+                        textViewLugar.text = "Lugar: ${nomeEscola} - ${numLugar}"
+                    }
+
+                    progressBar.visibility = View.INVISIBLE
+                    buttonVeiculos.visibility = View.VISIBLE
+                    buttonEntrarSair.visibility = View.VISIBLE
+                    textViewBoasVindas.visibility = View.VISIBLE
+                    textViewLugar.visibility = View.VISIBLE
                 }
             }, 1)
+
         buttonVeiculos.setOnClickListener{
             findNavController().navigate(R.id.action_navigation_home_to_navigation_veiculos)
         }
@@ -80,9 +94,9 @@ class HomeFragment : Fragment() {
                             val result = context?.let { databaseHelper.executeQuery(query, it) }
                             if (result == true){
                                 if(ocupado == 1){
-                                    Toast.makeText(context, "Lugar ocupado", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Lugar marcado como ocupado", Toast.LENGTH_SHORT).show()
                                 }else{
-                                    Toast.makeText(context, "Lugar livre", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Lugar marcado como livre", Toast.LENGTH_SHORT).show()
                                 }
                             }else{
                                 Toast.makeText(context, "Erro ao alterar ocupação de lugar", Toast.LENGTH_SHORT).show()

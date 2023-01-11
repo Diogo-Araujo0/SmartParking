@@ -50,6 +50,8 @@ class VeiculosFragment: Fragment() {
                         while(result.next()){
                             var matricula = result.getString("matricula")
                             var tipoVeiculo = result.getString("descricao")
+                            matricula = matricula.replace("\\s+".toRegex(), "")
+                            tipoVeiculo = tipoVeiculo.replace("\\s+".toRegex(), "")
                             var veiculo = Veiculo(matricula, tipoVeiculo)
                             veiculos.add(veiculo)
                         }
