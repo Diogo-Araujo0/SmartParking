@@ -79,13 +79,28 @@ class EditarPerfilFragment: Fragment() {
             var numero = editTextContacto.text.toString()
             val databaseHelper = DatabaseHelper()
             if(!arrayCartaoCidadao.contains(cartaoCidadao)) {
-                val query = "Update Aluno Set nome= ${username}, cartaoCidadao= 999333222, morada= 'Rua de Baixo' From Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID}"
-
+                val query = "Update Aluno Set nome= ${nome}, cartaoCidadao= ${cartaoCidadao}, morada= ${morada}, sexo = ${sexo}, codPostal = ${codPostal} From Aluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = Aluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID}"
                 var result = context?.let { databaseHelper.executeQuery(query, it) }
                 if (result == true) {
-                 //   val query = " INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
+                   val query = "Update ContactoAluno set numero= ${numero} From ContactoAluno Join Aluno_Utilizador on Aluno_Utilizador.numAluno = ContactoAluno.numAluno Where Aluno_Utilizador.utilizadorID = ${userID}"
                     result = context?.let { databaseHelper.executeQuery(query, it) }
+                    if (result == true) {
+                        val query = "Update Utilizador set username = ${username} From Utilizador Where Utilizador.utilizadorID = ${userID}"
+                        result = context?.let { databaseHelper.executeQuery(query, it) }
+                        if (result == true) {
+                            Toast.makeText(context, "Perfil alterado com sucesso", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }else{
+                            Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
+                    }
+                }else{
+                    Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
                 }
+            }else {
+                Toast.makeText(context, "Cartão de cidadão já existente", Toast.LENGTH_SHORT).show()
             }
 
         }
