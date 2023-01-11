@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
+    android:label="Adicionar Veículo"
     app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="ipca.djpm.smartparking.ui.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_navigation_veiculos"
             app:destination="@id/navigation_veiculos" />
@@ -31,20 +32,21 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_veiculos"
-        android:name="ipca.djpm.smartparking.ui.home.VeiculosFragment"
-        android:label="Veículos" >
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.veiculos.VeiculosFragment"
+        android:label="Veículos">
         <action
             android:id="@+id/action_navigation_veiculos_to_navigation_veiculos_add"
             app:destination="@id/navigation_veiculos_add" />
     </fragment>
     <fragment
+        android:id="@+id/navigation_veiculos_add"
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.VeiculosFragmentAdd"
+        android:label="Adicionar Veículo" />
+    <fragment
         android:id="@+id/navigation_perfil_editar"
         android:name="ipca.djpm.smartparking.ui.home.EditarPerfilFragment"
         android:label="Editar Perfil" />
-    <fragment
-        android:id="@+id/navigation_veiculos_add"
-        android:name="ipca.djpm.smartparking.ui.home.ui.home.veiculos.VeículosFragmentAdd"
-        android:label="Adicionar Veículo" />
+
     <fragment
         android:id="@+id/navigation_contactos"
         android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragment"
@@ -57,6 +59,5 @@
         android:id="@+id/navigation_contactos_add"
         android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragmentAdd"
         android:label="ContactosFragmentAdd" />
-
 
 </navigation>

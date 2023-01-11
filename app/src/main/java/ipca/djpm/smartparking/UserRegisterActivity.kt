@@ -44,7 +44,7 @@ class UserRegisterActivity : AppCompatActivity() {
                     }
                 }
            }else{
-                Toast.makeText(this, "Email e Password não podem estar vazios!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Username e/ou password não podem estar vazios!", Toast.LENGTH_SHORT).show()
             }
         }
 

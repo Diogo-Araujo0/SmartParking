@@ -1,6 +1,5 @@
 package ipca.djpm.smartparking.ui.home
 
-import android.R
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -38,6 +37,7 @@ class EditarPerfilFragment: Fragment() {
 
         val editTextNome = binding.editTextNome
         val editTextUsername = binding.editTextUsername
+        val editTextPassword = binding.editTextPassword
         val editTextCartaoCidadao = binding.editTextCartaoCidadao
         val editTextMorada = binding.editTextMorada
         val radioGroupSexo = binding.radioGroupSexo
@@ -46,6 +46,7 @@ class EditarPerfilFragment: Fragment() {
         val progressBarEditUser = binding.progressBarEditUser
         val imageViewNome = binding.imageViewNome
         val imageViewUser = binding.imageViewUser
+        val imageViewPassword = binding.imageViewPassword
         val imageViewCC = binding.imageViewCC
         val imageViewMorada = binding.imageViewMorada
         val imageViewSexo = binding.imageViewSexo
@@ -86,12 +87,13 @@ class EditarPerfilFragment: Fragment() {
                         var codPostal = resultQuery.getInt("codPostal")
                         arrayCodPostais.add(codPostal)
                     }
-                    val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, arrayCodPostais)
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arrayCodPostais)
                     spinnerCodPostais.adapter = adapter
                     spinnerCodPostais.setSelection(arrayCodPostais.indexOf(codPostal))
                     progressBarEditUser.visibility = View.INVISIBLE
                     editTextNome.visibility = View.VISIBLE
                     editTextUsername.visibility = View.VISIBLE
+                    editTextPassword.visibility = View.VISIBLE
                     editTextCartaoCidadao.visibility = View.VISIBLE
                     editTextMorada.visibility = View.VISIBLE
                     radioGroupSexo.visibility = View.VISIBLE
@@ -103,7 +105,7 @@ class EditarPerfilFragment: Fragment() {
                     imageViewMorada.visibility = View.VISIBLE
                     imageViewSexo.visibility = View.VISIBLE
                     imageViewCodPostal.visibility = View.VISIBLE
-
+                    imageViewPassword.visibility = View.VISIBLE
                 }else{
                     Toast.makeText(context, "Erro ao obter códigos postais", Toast.LENGTH_SHORT).show()
                 }
@@ -121,28 +123,46 @@ class EditarPerfilFragment: Fragment() {
         buttonEditar.setOnClickListener{
             val selectedOption: Int = radioGroupSexo.checkedRadioButtonId
             val radioButton = view?.findViewById<RadioButton>(selectedOption)
-            var query = "UPDATE Aluno SET nome= '${editTextNome.text}', cartaoCidadao= ${editTextCartaoCidadao.text}, morada='${editTextMorada.text}', sexo = '${radioButton!!.text}', codPostal = ${codPostal} FROM Aluno JOIN Aluno_Utilizador ON Aluno_Utilizador.numAluno = Aluno.numAluno WHERE Aluno_Utilizador.utilizadorID = ${userID}"
-            var result = context?.let { databaseHelper.executeQuery(query, it) }
-            if (result == true) {
+            if(editTextCartaoCidadao.text.isNotBlank() && editTextMorada.text.isNotBlank() && radioButton!!.text.isNotBlank() && editTextUsername.text.isNotBlank()){
+                var query = "UPDATE Aluno SET nome= '${editTextNome.text}', cartaoCidadao= ${editTextCartaoCidadao.text}, morada='${editTextMorada.text}', sexo = '${radioButton!!.text}', codPostal = ${codPostal} FROM Aluno JOIN Aluno_Utilizador ON Aluno_Utilizador.numAluno = Aluno.numAluno WHERE Aluno_Utilizador.utilizadorID = ${userID}"
+                var result = context?.let { databaseHelper.executeQuery(query, it) }
+                if (result == true) {
 
-                if(savedUser != editTextUsername.text.toString()){
-                    query = "UPDATE Utilizador SET username = '${editTextUsername.text}' WHERE utilizadorID=${userID}"
-                    result = context?.let { databaseHelper.executeQuery(query, it) }
-                    if (result == true) {
-                        val sharedPreferences = context?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-                        val editor = sharedPreferences?.edit()
-                        editor?.apply{
-                            putString("USER", editTextUsername.text.toString())
-                        }?.apply()
-                    }else{
-                        Toast.makeText(context, "Erro ao alterar username", Toast.LENGTH_SHORT).show()
+                    if(savedUser != editTextUsername.text.toString()){
+                        query = "UPDATE Utilizador SET username = '${editTextUsername.text}' WHERE utilizadorID=${userID}"
+                        result = context?.let { databaseHelper.executeQuery(query, it) }
+                        if (result == true) {
+                            val sharedPreferences = context?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences?.edit()
+                            editor?.apply{
+                                putString("USER", editTextUsername.text.toString())
+                            }?.apply()
+                        }else{
+                            Toast.makeText(context, "Erro ao alterar username", Toast.LENGTH_SHORT).show()
+                        }
                     }
+                    if(editTextPassword.text.isNotBlank()){
+                        query = "UPDATE Utilizador SET password = '${editTextPassword.text}' WHERE utilizadorID=${userID}"
+                        result = context?.let { databaseHelper.executeQuery(query, it) }
+                        if (result == true) {
+                            val sharedPreferences = context?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences?.edit()
+                            editor?.apply{
+                                putString("PASS", editTextUsername.text.toString())
+                            }?.apply()
+                        }else{
+                            Toast.makeText(context, "Erro ao alterar username", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    Toast.makeText(context, "Perfil alterado com sucesso", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }else{
+                    Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(context, "Perfil alterado com sucesso", Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
             }else{
-                Toast.makeText(context, "Erro ao alterar dados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Dados em branco", Toast.LENGTH_SHORT).show()
             }
+
         }
 
         return root
