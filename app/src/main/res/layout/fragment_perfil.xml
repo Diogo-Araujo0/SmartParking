@@ -6,12 +6,55 @@
     android:layout_height="match_parent"
     android:backgroundTint="#00FFFFFF">
 
+    <TextView
+        android:id="@+id/textViewCartaoCidadao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="95dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="36dp"
+        android:text="cartao Cidadao"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewMorada"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="95dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="36dp"
+        android:text="username"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewCartaoCidadao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTempUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="144dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Sem veículos"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/listViewVeiculos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.506" />
+
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="48dp"
         android:backgroundTint="@color/green_ipca"
         android:text="Logout"
@@ -27,7 +70,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="48dp"
         android:backgroundTint="@color/green_ipca"
         android:text="Alterar Dados"
@@ -36,31 +79,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_username_value" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="62dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAlterar"
-        app:layout_constraintEnd_toStartOf="@+id/text_view_username_value"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_person_24" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/text_view_email_value"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_profile"
-        app:srcCompat="@drawable/ic_baseline_email_24" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewContactos" />
 
     <TextView
         android:id="@+id/text_view_profile"
@@ -68,49 +87,91 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="49dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="45dp"
         android:fontFamily="sans-serif-medium"
         android:text="Perfil"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_email_value"
+        app:layout_constraintBottom_toTopOf="@+id/textViewUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/text_view_email_value"
+        android:id="@+id/textViewMorada"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="36dp"
+        android:text="morada"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_username_value"
+        app:layout_constraintBottom_toTopOf="@+id/textViewContactos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/text_view_username_value"
+        android:id="@+id/textViewContactos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
         android:layout_marginEnd="50dp"
+        android:text="contactos"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536" />
 
-    <EditText
-        android:id="@+id/editTextEmailTeste"
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="57dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="90dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAlterar"
+        app:layout_constraintEnd_toStartOf="@+id/textViewContactos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_contact_phone_24" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="53dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="38dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintEnd_toStartOf="@+id/textViewMorada"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_home_24" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="21dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="38dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView9"
+        app:layout_constraintEnd_toStartOf="@+id/textViewCartaoCidadao"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_info_24" />
+
+    <ImageView
+        android:id="@+id/imageView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="EmailTeste"
-        tools:layout_editor_absoluteX="78dp"
-        tools:layout_editor_absoluteY="248dp" />
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewUsername"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_profile"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
