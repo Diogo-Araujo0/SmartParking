@@ -1,6 +1,5 @@
 package ipca.djpm.smartparking.ui.home.ui.home.veiculos
 
-import android.R
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -15,7 +14,7 @@ import ipca.djpm.smartparking.DatabaseHelper
 import ipca.djpm.smartparking.databinding.FragmentVeiculosAddBinding
 import java.util.regex.Pattern
 
-class VeículosFragmentAdd: Fragment() {
+class VeiculosFragmentAdd: Fragment() {
     private var _binding: FragmentVeiculosAddBinding? = null
     private val binding get() = _binding!!
     private var userID: Int? = null
@@ -47,13 +46,13 @@ class VeículosFragmentAdd: Fragment() {
                 var query = "SELECT descricao FROM TipoVeiculo ORDER BY tipoVeiculoID"
                 val databaseHelper = DatabaseHelper()
                 var result = context?.let { databaseHelper.selectQuery(query, it) }
-                if (result != null && spinnerTipoVeiculo != null) {
+                if (result != null) {
                     while (result.next()) {
                         var descricao = result.getString("descricao")
                         descricao = descricao.replace("\\s+".toRegex(), "")
                         arrayTipoVeiculos.add(descricao)
                     }
-                    val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, arrayTipoVeiculos)
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arrayTipoVeiculos)
                     spinnerTipoVeiculo.adapter = adapter
 
                     query = "SELECT matricula FROM Veiculo"
@@ -113,7 +112,7 @@ class VeículosFragmentAdd: Fragment() {
                 }else{
                     Toast.makeText(context, "Veículo já existente", Toast.LENGTH_SHORT).show()
                     val query = "INSERT INTO Utilizador_Veiculo(utilizadorID, matricula) VALUES(${userID}, '${matricula}')"
-                    var result = context?.let { databaseHelper.executeQuery(query, it) }
+                    val result = context?.let { databaseHelper.executeQuery(query, it) }
                     if (result == true) {
                         Toast.makeText(context, "Veículo adicionado com sucesso", Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()
@@ -154,7 +153,7 @@ class VeículosFragmentAdd: Fragment() {
         }
     }
 
-    fun verificarMatricula(matricula : String) : Boolean{
+    private fun verificarMatricula(matricula : String) : Boolean{
         val patterb = Pattern.compile("^(([A-Z]{2}-\\d{2}-(\\d{2}|[A-Z]{2}))|(\\d{2}-(\\d{2}-[A-Z]{2}|[A-Z]{2}-\\d{2})))\$")
         val match = patterb.matcher(matricula)
         return match.matches()

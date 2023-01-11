@@ -1,4 +1,4 @@
-package ipca.djpm.smartparking.ui.home
+package ipca.djpm.smartparking.ui.home.ui.home.veiculos
 
 import android.content.Context
 import android.os.Bundle
@@ -52,7 +52,7 @@ class VeiculosFragment: Fragment() {
                             var tipoVeiculo = result.getString("descricao")
                             matricula = matricula.replace("\\s+".toRegex(), "")
                             tipoVeiculo = tipoVeiculo.replace("\\s+".toRegex(), "")
-                            var veiculo = Veiculo(matricula, tipoVeiculo)
+                            val veiculo = Veiculo(matricula, tipoVeiculo)
                             veiculos.add(veiculo)
                         }
                         progressBar.visibility = View.INVISIBLE
@@ -133,7 +133,7 @@ class VeiculosFragment: Fragment() {
                         if (userID != -1) {
                             val databaseHelper = DatabaseHelper()
                             var query = "SELECT COUNT(utilizadorID) as contador from Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}'"
-                            var resultSelect = context?.let { databaseHelper.selectQuery(query, it) }
+                            val resultSelect = context?.let { databaseHelper.selectQuery(query, it) }
                             if(resultSelect!!.next()){
                                 val contador = resultSelect.getInt("contador")
                                 var result: Boolean
@@ -144,13 +144,13 @@ class VeiculosFragment: Fragment() {
                                 }else{
                                     query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
                                     result = context?.let { databaseHelper.executeQuery(query, it) }!!
-                                    if (result == true) {
+                                    if (result) {
                                         query = "DELETE FROM Veiculo WHERE matricula='${veiculos[position].matricula}'"
                                         result = context?.let { databaseHelper.executeQuery(query, it) }!!
                                     }
                                 }
 
-                                if (result == true) {
+                                if (result) {
                                     Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
                                     progressBar.visibility = View.INVISIBLE
                                     veiculos.remove(veiculos[position])
