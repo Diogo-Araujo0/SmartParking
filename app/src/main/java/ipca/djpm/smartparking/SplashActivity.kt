@@ -26,11 +26,11 @@ class SplashActivity : AppCompatActivity() {
             loadData()
             if(!savedUser.isNullOrEmpty() && !savedPass.isNullOrEmpty()) {
                 var result = databaseHelper.login(savedUser!!, savedPass!!, this)
-                if (result == -1) {
-                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                if (result) {
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     finish()
                 } else {
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                     finish()
                 }
             }else{

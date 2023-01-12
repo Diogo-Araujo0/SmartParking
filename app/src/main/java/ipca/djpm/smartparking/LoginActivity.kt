@@ -25,6 +25,7 @@ class LoginActivity: AppCompatActivity() {
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val buttonNewUser = findViewById<Button>(R.id.buttonNewUser)
+        val buttonForgotPass = findViewById<Button>(R.id.buttonForgotPass)
         val editTextLoginUsername = findViewById<EditText>(R.id.editTextLoginUsername)
         val editTextLoginPassword = findViewById<EditText>(R.id.editTextLoginPassword)
         val checkBoxSaveLogin = findViewById<CheckBox>(R.id.checkBoxSaveLogin)
@@ -33,12 +34,12 @@ class LoginActivity: AppCompatActivity() {
             val username = editTextLoginUsername.text.toString()
             val password = editTextLoginPassword.text.toString()
             if(!username.isNullOrEmpty() && !password.isNullOrEmpty()){
-                if(checkBoxSaveLogin.isChecked) {
-                    saveData(username, password)
-                }
                 val databaseHelper = DatabaseHelper()
                 val result = databaseHelper.login(username, password, this)
-                if(result != -1){
+                if(result){
+                    if(checkBoxSaveLogin.isChecked) {
+                        saveData(username, password)
+                    }
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
                 }else{
@@ -51,6 +52,10 @@ class LoginActivity: AppCompatActivity() {
 
         buttonNewUser.setOnClickListener{
             resultLauncher?.launch(Intent(this@LoginActivity, UserRegisterActivity::class.java))
+        }
+
+        buttonForgotPass.setOnClickListener{
+            resultLauncher?.launch(Intent(this@LoginActivity, ForgotPassActivity::class.java))
         }
     }
 

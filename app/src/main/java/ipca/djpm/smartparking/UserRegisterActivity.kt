@@ -34,7 +34,7 @@ class UserRegisterActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }else {
-                    val query = "INSERT INTO Utilizador(tipoUtilizadorID, username, password, tempoLimite) VALUES(1,'${username}', '${password}', 0)"
+                    val query = "INSERT INTO Utilizador(tipoUtilizadorID, username, password, tempoLimite) VALUES(0,'${username}', '${password}', 0)"
                     val databaseHelper = DatabaseHelper()
                     val result = databaseHelper.executeQuery(query, this)
                     if (result) {

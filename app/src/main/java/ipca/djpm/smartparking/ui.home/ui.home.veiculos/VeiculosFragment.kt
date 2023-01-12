@@ -142,25 +142,29 @@ class VeiculosFragment: Fragment() {
                                 if(resultSelect.next()){
                                     val contador = resultSelect.getInt("contador")
                                     var result: Boolean
-
-                                    if(contador > 1) {
-                                        query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
-                                        result = context?.let { databaseHelper.executeQuery(query, it) }!!
-                                    }else{
-                                        query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
-                                        result = context?.let { databaseHelper.executeQuery(query, it) }!!
-                                        if (result) {
-                                            query = "DELETE FROM Veiculo WHERE matricula='${veiculos[position].matricula}'"
+                                    if(contador != 0){
+                                        if(contador > 1) {
+                                            query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
                                             result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                        }else{
+                                            query = "DELETE FROM Utilizador_Veiculo WHERE matricula='${veiculos[position].matricula}' AND utilizadorID=${userID}"
+                                            result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                            if (result) {
+                                                query = "DELETE FROM Veiculo WHERE matricula='${veiculos[position].matricula}'"
+                                                result = context?.let { databaseHelper.executeQuery(query, it) }!!
+                                            }
                                         }
-                                    }
 
-                                    if (result) {
-                                        Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
-                                        progressBar.visibility = View.INVISIBLE
-                                        veiculos.remove(veiculos[position])
-                                        adapter.notifyDataSetChanged()
-                                    } else {
+                                        if (result) {
+                                            Toast.makeText(context, "Veículo removido com sucesso", Toast.LENGTH_SHORT).show()
+                                            progressBar.visibility = View.INVISIBLE
+                                            veiculos.remove(veiculos[position])
+                                            adapter.notifyDataSetChanged()
+                                        } else {
+                                            Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
+                                            progressBar.visibility = View.INVISIBLE
+                                        }
+                                    }else{
                                         Toast.makeText(context, "Erro ao remover veículo", Toast.LENGTH_SHORT).show()
                                         progressBar.visibility = View.INVISIBLE
                                     }

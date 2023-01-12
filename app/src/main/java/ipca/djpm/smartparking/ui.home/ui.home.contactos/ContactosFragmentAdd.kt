@@ -86,11 +86,15 @@ class ContactosFragmentAdd: Fragment() {
                 if (resultSelect != null) {
                     if(resultSelect.next()) {
                         val numAluno = resultSelect.getInt("numAluno")
-                        query = "INSERT INTO ContactoAluno(tipoContactoID, numAluno, numero) VALUES('${tipoContactoID}',${numAluno}, ${numero.toInt()})"
-                        val result = context?.let { databaseHelper.executeQuery(query, it) }
-                        if (result == true) {
-                            Toast.makeText(context, "Contacto adicionado com sucesso", Toast.LENGTH_SHORT).show()
-                            findNavController().popBackStack()
+                        if(numAluno != 0){
+                            query = "INSERT INTO ContactoAluno(tipoContactoID, numAluno, numero) VALUES('${tipoContactoID}',${numAluno}, ${numero.toInt()})"
+                            val result = context?.let { databaseHelper.executeQuery(query, it) }
+                            if (result == true) {
+                                Toast.makeText(context, "Contacto adicionado com sucesso", Toast.LENGTH_SHORT).show()
+                                findNavController().popBackStack()
+                            }else{
+                                Toast.makeText(context, "Erro ao adicionar contacto", Toast.LENGTH_SHORT).show()
+                            }
                         }else{
                             Toast.makeText(context, "Erro ao adicionar contacto", Toast.LENGTH_SHORT).show()
                         }

@@ -108,20 +108,21 @@ class DatabaseHelper {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun login(email: String, password: String, context: Context): Int {
-            val query =
-                "SELECT utilizadorID FROM Utilizador WHERE username='$email' AND password='$password'"
+    fun login(email: String, password: String, context: Context): Boolean {
+            val query = "SELECT utilizadorID, tipoUtilizadorID FROM Utilizador WHERE username='$email' AND password='$password'"
             val result = selectQuery(query, context)
             if (result != null) {
                 if (result.next()) {
                     val utilizadorID = result.getInt("utilizadorID")
+                    val tipoUtilizadorID = result.getInt("tipoUtilizadorID")
                     val sharedPreferences =
                         context.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
                     editor.apply {
                         putInt("USER_ID", utilizadorID)
+                        putInt("TIPO_USER_ID", tipoUtilizadorID)
                     }.apply()
-                    return utilizadorID
+                    return true
                 } else {
                     Toast.makeText(context, "Erro ao obter utilizador", Toast.LENGTH_SHORT).show()
                 }
@@ -129,6 +130,6 @@ class DatabaseHelper {
             else {
                 Toast.makeText(context, "Erro ao obter utilizador", Toast.LENGTH_SHORT).show()
             }
-            return -1
+            return false
         }
 }

@@ -36,7 +36,7 @@ class ForgotPassActivity: AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }else{
-                        val query = "UPDATE Utilizador SET password='${password}' WHERE username=${username}"
+                        val query = "UPDATE Utilizador SET password='${password}' WHERE username='${username}'"
                         val databaseHelper = DatabaseHelper()
                         val result = databaseHelper.executeQuery(query, this)
                         if (result) {
