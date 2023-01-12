@@ -1,7 +1,6 @@
 package ipca.djpm.smartparking
 
 class Lugar {
-
     var numLugar : Int
     var ocupado : Int
 
