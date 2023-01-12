@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    android:label="Adicionar Veículo"
     app:startDestination="@+id/navigation_home">
 
     <fragment
@@ -14,6 +13,15 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_veiculos"
             app:destination="@id/navigation_veiculos" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_atribuir_utilizadores"
+            app:destination="@id/navigation_atribuir_utilizadores" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_atribuir_lugares"
+            app:destination="@id/navigation_atribuir_lugares" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_veiculos_admin"
+            app:destination="@id/navigation_veiculos_admin" />
     </fragment>
     <fragment
         android:id="@+id/navigation_parque"
@@ -59,5 +67,25 @@
         android:id="@+id/navigation_contactos_add"
         android:name="ipca.djpm.smartparking.ui.home.ui.home.contactos.ContactosFragmentAdd"
         android:label="Adicionar Contacto" />
+    <fragment
+        android:id="@+id/navigation_veiculos_admin_add"
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.veiculos.VeiculosAdminFragmentAdd"
+        android:label="Adicionar Veículo" />
+    <fragment
+        android:id="@+id/navigation_atribuir_utilizadores"
+        android:name="ipca.djpm.smartparking.ui.home.AtribuirUtilizadoresFragment"
+        android:label="Atribuir/Desassociar Utilizador" />
+    <fragment
+        android:id="@+id/navigation_atribuir_lugares"
+        android:name="ipca.djpm.smartparking.ui.home.AtribuirLugaresFragment"
+        android:label="Atribuir/Desassociar Lugares" />
+    <fragment
+        android:id="@+id/navigation_veiculos_admin"
+        android:name="ipca.djpm.smartparking.ui.home.ui.home.veiculos.VeiculosAdminFragment"
+        android:label="Veículos" >
+        <action
+            android:id="@+id/action_navigation_veiculos_admin_to_navigation_veiculos_admin_add"
+            app:destination="@id/navigation_veiculos_admin_add" />
+    </fragment>
 
 </navigation>

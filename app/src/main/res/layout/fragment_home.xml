@@ -20,6 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonEntrarSair" />
 
+    <Button
+        android:id="@+id/buttonAtribuirLugar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:text="Atribuir/Desassociar lugares"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEntrarSair" />
+
     <ProgressBar
         android:id="@+id/progressBarHome"
         style="?android:attr/progressBarStyle"
@@ -61,6 +75,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/buttonVeiculosAdmin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:text="Veículos"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/buttonEntrarSair"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -68,6 +95,20 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="48dp"
         android:text="Entrar/Sair do parque"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonVeiculos" />
+
+    <Button
+        android:id="@+id/buttonUtilizadores"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:text="Atribuir/Desassociar utilizadores"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

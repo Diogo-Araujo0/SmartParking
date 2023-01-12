@@ -55,7 +55,7 @@ class VeiculosFragment: Fragment() {
                             var tipoVeiculo = result.getString("descricao")
                             matricula = matricula.replace("\\s+".toRegex(), "")
                             tipoVeiculo = tipoVeiculo.replace("\\s+".toRegex(), "")
-                            val veiculo = Veiculo(matricula, tipoVeiculo)
+                            val veiculo = Veiculo(matricula, tipoVeiculo, null)
                             veiculos.add(veiculo)
                         }
                         progressBar.visibility = View.INVISIBLE

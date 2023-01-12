@@ -45,14 +45,13 @@ class HomeFragment : Fragment() {
         val buttonVeiculos = binding.buttonVeiculos
         val buttonEntrarSair = binding.buttonEntrarSair
         val buttonPedirLugar = binding.buttonPedirLugar
+        val buttonVeiculosAdmin = binding.buttonVeiculosAdmin
+        val buttonUtilizadores = binding.buttonUtilizadores
+        val buttonAtribuirLugar = binding.buttonAtribuirLugar
         val textViewBoasVindas = binding.textViewBoasVindas
         val progressBar = binding.progressBarHome
         val textViewLugar = binding.textViewLugar
         progressBar.visibility = View.VISIBLE
-
-        if(tipoUserID != 0 && tipoUserID != 1) { //0-temp 1-admin
-            gestaoLugar()
-        }
 
         val databaseHelper = DatabaseHelper()
         Handler(Looper.getMainLooper()).postDelayed(
@@ -86,16 +85,37 @@ class HomeFragment : Fragment() {
                     }
 
                     progressBar.visibility = View.INVISIBLE
-                    buttonVeiculos.visibility = View.VISIBLE
-                    buttonEntrarSair.visibility = View.VISIBLE
+                    if(tipoUserID != 1) { //0-temp 1-admin
+                        buttonVeiculos.visibility = View.VISIBLE
+                        buttonEntrarSair.visibility = View.VISIBLE
+                        buttonPedirLugar.visibility = View.VISIBLE
+                        textViewLugar.visibility = View.VISIBLE
+                    }else{
+                        buttonVeiculosAdmin.visibility = View.VISIBLE
+                        buttonUtilizadores.visibility = View.VISIBLE
+                        buttonAtribuirLugar.visibility = View.VISIBLE
+                    }
+
                     textViewBoasVindas.visibility = View.VISIBLE
-                    textViewLugar.visibility = View.VISIBLE
-                    buttonPedirLugar.visibility = View.VISIBLE
+
+
                 }
             }, 100)
 
         buttonVeiculos.setOnClickListener{
             findNavController().navigate(R.id.action_navigation_home_to_navigation_veiculos)
+        }
+
+        buttonVeiculosAdmin.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_veiculos_admin)
+        }
+
+        buttonUtilizadores.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_atribuir_utilizadores)
+        }
+
+        buttonAtribuirLugar.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_atribuir_lugares)
         }
 
         buttonPedirLugar.setOnClickListener{
@@ -163,6 +183,7 @@ class HomeFragment : Fragment() {
                     }
                 }, 1)
         }
+
         return root
     }
 
@@ -173,10 +194,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun gestaoLugar(){
-
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
